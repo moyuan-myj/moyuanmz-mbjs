@@ -938,7 +938,7 @@ with column84:
 
 with column85:
     if jjc_pd == "是":
-        zd_zjc["生命"] = round(zb_tx["生命"] + cjtx["生命"] + fm4jc["生命"] + qtzd_jc["生命"] + 0.4,1)
+        zd_zjc["生命"] = round(zb_tx["生命"] + cjtx["生命"] + fm4jc["生命"] + qtzd_jc["生命"] + 0.4,3)
     else:
         zd_zjc["生命"] = zb_tx["生命"] + cjtx["生命"] + fm4jc["生命"] + qtzd_jc["生命"]
     zd_zjc["攻击"] = zb_tx["攻击"] + cjtx["攻击"] + fm4jc["攻击"] + qtzd_jc["攻击"]
@@ -1138,12 +1138,12 @@ with st.expander("是否存在 攻转防 防转攻"):
 
 st.write("### 英雄的战场面板")
 
-yx_zdmb_zz["生命"] = yx_zdmb["生命"] + yx_sx_zhl["生命"]
-yx_zdmb_zz["攻击"] = yx_zdmb["攻击"] + yx_sx_zhl["攻击"]
-yx_zdmb_zz["智力"] = yx_zdmb["智力"] + yx_sx_zhl["智力"]
-yx_zdmb_zz["防御"] = yx_zdmb["防御"] + yx_sx_zhl["防御"]
-yx_zdmb_zz["魔防"] = yx_zdmb["魔防"] + yx_sx_zhl["魔防"]
-yx_zdmb_zz["技巧"] = yx_zdmb["技巧"] + yx_sx_zhl["技巧"]
+yx_zdmb_zz["生命"] = round(yx_zdmb["生命"] + yx_sx_zhl["生命"],1)
+yx_zdmb_zz["攻击"] = round(yx_zdmb["攻击"] + yx_sx_zhl["攻击"],1)
+yx_zdmb_zz["智力"] = round(yx_zdmb["智力"] + yx_sx_zhl["智力"],1)
+yx_zdmb_zz["防御"] = round(yx_zdmb["防御"] + yx_sx_zhl["防御"],1)
+yx_zdmb_zz["魔防"] = round(yx_zdmb["魔防"] + yx_sx_zhl["魔防"],1)
+yx_zdmb_zz["技巧"] = round(yx_zdmb["技巧"] + yx_sx_zhl["技巧"],1)
 
 column91, column92, column93= st.columns([1, 1, 1])
 with column91:

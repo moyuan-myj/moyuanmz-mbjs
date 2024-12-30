@@ -186,12 +186,12 @@ with column01:
     st.image(hero_image_url, caption=selected_hero, width=150)  # 设置宽度为150像素
 with column02:
     if selected_hero == "自定义英雄":
-        bz["生命"] = st.number_input("生命-白字", value=bz["生命"])  # 生命白字
-        bz["攻击"] = st.number_input("攻击-白字", value=bz["攻击"])  # 攻击白字
-        bz["智力"] = st.number_input("智力-白字", value=bz["智力"])  # 智力白字
-        bz["防御"] = st.number_input("防御-白字", value=bz["防御"])  # 防御白字
-        bz["魔防"] = st.number_input("魔防-白字", value=bz["魔防"])  # 魔防白字
-        bz["技巧"] = st.number_input("技巧-白字", value=bz["技巧"])  # 技巧白字
+        bz["生命"] = mb_shuru(st.text_input("生命-白字", value="0"))  # 生命白字
+        bz["攻击"] = mb_shuru(st.text_input("攻击-白字", value="0"))  # 攻击白字
+        bz["智力"] = mb_shuru(st.text_input("智力-白字", value="0"))  # 智力白字
+        bz["防御"] = mb_shuru(st.text_input("防御-白字", value="0"))  # 防御白字
+        bz["魔防"] = mb_shuru(st.text_input("魔防-白字", value="0"))  # 魔防白字
+        bz["技巧"] = mb_shuru(st.text_input("技巧-白字", value="0"))  # 技巧白字
     else:
         # 根据选择的英雄和职业，获取属性值
         selected_row = df1[(df1['英雄名'] == selected_hero) & (df1['职业名'] == selected_job)].iloc[0]

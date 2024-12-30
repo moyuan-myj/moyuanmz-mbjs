@@ -307,11 +307,11 @@ with st.expander("点击打开进行神契设置"):
     st.write("")
     column1523, column15223, column1524 = st.columns([1,0.2,1])
     with column1523:
-        sq_cxzz["士兵生命"] = bfb_shuru(st.text_input("士兵生命%（最大值18%）", value=str(sq_cxzz_mrz["士兵生命"]*100))) # 士兵生命晨曦加成百分比
-        sq_cxzz["士兵攻击"] = bfb_shuru(st.text_input("士兵攻击%（最大值18%）", value=str(sq_cxzz_mrz["士兵攻击"]*100))) # 士兵攻击晨曦加成百分比
+        sq_cxzz["士兵生命"] = bfb_shuru(st.text_input("士兵生命%（最大值18%）", value=str(round(sq_cxzz_mrz["士兵生命"]*100,1)))) # 士兵生命晨曦加成百分比
+        sq_cxzz["士兵攻击"] = bfb_shuru(st.text_input("士兵攻击%（最大值18%）", value=str(round(sq_cxzz_mrz["士兵攻击"]*100,1)))) # 士兵攻击晨曦加成百分比
     with column1524:
-        sq_cxzz["士兵防御"] = bfb_shuru(st.text_input("士兵防御%（最大值18%）", value=str(sq_cxzz_mrz["士兵防御"]*100))) # 士兵防御晨曦加成百分比
-        sq_cxzz["士兵魔防"] = bfb_shuru(st.text_input("士兵魔防%（最大值18%）", value=str(sq_cxzz_mrz["士兵魔防"]*100)))  # 士兵魔防晨曦加成百分比
+        sq_cxzz["士兵防御"] = bfb_shuru(st.text_input("士兵防御%（最大值18%）", value=str(round(sq_cxzz_mrz["士兵防御"]*100,1)))) # 士兵防御晨曦加成百分比
+        sq_cxzz["士兵魔防"] = bfb_shuru(st.text_input("士兵魔防%（最大值18%）", value=str(round(sq_cxzz_mrz["士兵魔防"]*100,1))))  # 士兵魔防晨曦加成百分比
 
     # 添加一个下载按钮，保存当前数据并导出为Excel文件
     if st.button("保存自己的晨曦加成并缓存Excel文件"):
@@ -686,12 +686,12 @@ with tab5:
         st.markdown(f"#### 士兵魔防: <strong><span style='color:green;font-size:25px;'> + {sq_zjc["士兵魔防"]*100}% </span></strong>",unsafe_allow_html=True)
 
 with tab6:
-    lz["生命"] = zb_jc["生命"] + bz["生命"]*fm_bfb["生命"] + fm_gdz["生命"] + zyjt["生命"] + zw["生命"] + sq_zjc["生命"]
-    lz["攻击"] = zb_jc["攻击"] + bz["攻击"]*fm_bfb["攻击"] + fm_gdz["攻击"] + zyjt["攻击"] + zw["攻击"] + sq_zjc["攻击"]
-    lz["智力"] = zb_jc["智力"] + bz["智力"]*fm_bfb["智力"] + fm_gdz["智力"] + zyjt["智力"] + zw["智力"] + sq_zjc["智力"]
-    lz["防御"] = zb_jc["防御"] + bz["防御"]*fm_bfb["防御"] + fm_gdz["防御"] + zyjt["防御"] + zw["防御"] + sq_zjc["防御"]
-    lz["魔防"] = zb_jc["魔防"] + bz["魔防"]*fm_bfb["魔防"] + fm_gdz["魔防"] + zyjt["魔防"] + zw["魔防"] + sq_zjc["魔防"]
-    lz["技巧"] = zb_jc["技巧"] + zyjt["技巧"] + zw["技巧"] + sq_zjc["技巧"]
+    lz["生命"] = round(zb_jc["生命"] + bz["生命"]*fm_bfb["生命"] + fm_gdz["生命"] + zyjt["生命"] + zw["生命"] + sq_zjc["生命"],1)
+    lz["攻击"] = round(zb_jc["攻击"] + bz["攻击"]*fm_bfb["攻击"] + fm_gdz["攻击"] + zyjt["攻击"] + zw["攻击"] + sq_zjc["攻击"],1)
+    lz["智力"] = round(zb_jc["智力"] + bz["智力"]*fm_bfb["智力"] + fm_gdz["智力"] + zyjt["智力"] + zw["智力"] + sq_zjc["智力"],1)
+    lz["防御"] = round(zb_jc["防御"] + bz["防御"]*fm_bfb["防御"] + fm_gdz["防御"] + zyjt["防御"] + zw["防御"] + sq_zjc["防御"],1)
+    lz["魔防"] = round(zb_jc["魔防"] + bz["魔防"]*fm_bfb["魔防"] + fm_gdz["魔防"] + zyjt["魔防"] + zw["魔防"] + sq_zjc["魔防"],1)
+    lz["技巧"] = round(zb_jc["技巧"] + zyjt["技巧"] + zw["技巧"] + sq_zjc["技巧"],1)
 
     st.markdown(f"#### 生命: <strong><span style='color:green;font-size:25px;'> + {lz["生命"]}</span></strong>",unsafe_allow_html=True)
     st.markdown(f"#### 攻击: <strong><span style='color:green;font-size:25px;'> + {lz["攻击"]}</span></strong>",unsafe_allow_html=True)

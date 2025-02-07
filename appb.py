@@ -70,7 +70,7 @@ fm_gdz = {"生命":0,"攻击":0,"智力":0,"防御":0,"魔防":0}  # 初始化�
 wq_jc = {"生命":0,"攻击":0,"智力":0,"防御":0,"魔防":0,"技巧":0}  # 初始化武器基础值 字典
 yf_jc = {"生命":0,"攻击":0,"智力":0,"防御":0,"魔防":0,"技巧":0}  # 初始化衣服基础值 字典
 ts_jc = {"生命":0,"攻击":0,"智力":0,"防御":0,"魔防":0,"技巧":0}  # 初始化头饰基础值 字典
-ts_jc = {"生命":0,"攻击":0,"智力":0,"防御":0,"魔防":0,"技巧":0}  # 初始化饰品基础值 字典
+sp_jc = {"生命":0,"攻击":0,"智力":0,"防御":0,"魔防":0,"技巧":0}  # 初始化饰品基础值 字典
 zb_jc = {"生命":0,"攻击":0,"智力":0,"防御":0,"魔防":0,"技巧":0}  # 初始化装备基础值总加成 字典
 
 sq_slsb = {"生命":0,"攻击":0,"智力":0,"防御":0,"魔防":0,"技巧":0,"士兵生命":0,"士兵攻击":0,"士兵防御":0,"士兵魔防":0}  # 初始化神契神力石板加成 字典
@@ -82,8 +82,14 @@ sq_zjc = {"生命":0,"攻击":0,"智力":0,"防御":0,"魔防":0,"技巧":0,"士
 bjl = {"生命":0,"攻击":0,"智力":0,"防御":0,"魔防":0,"技巧":0}  # 初始化白+绿 字典
 zb_tx = {"生命":0,"攻击":0,"智力":0,"防御":0,"魔防":0,"技巧":0}  # 初始化装备特效加成 字典
 zb_tx_gd = {"生命":0,"攻击":0,"智力":0,"防御":0,"魔防":0,"技巧":0}  # 初始化装备特效 过渡 加成 字典
+zb_tx_cz = {"生命":0,"攻击":0,"智力":0,"防御":0,"魔防":0,"技巧":0} # 初始化装备特效常驻加成 字典
+zb_tx_mx = {"生命":0,"攻击":0,"智力":0,"防御":0,"魔防":0,"技巧":0} # 初始化装备特效部队满血加成 字典
+zb_tx_80x = {"生命":0,"攻击":0,"智力":0,"防御":0,"魔防":0,"技巧":0} # 初始化装备特效部队80血加成 字典
+zb_tx_50x = {"生命":0,"攻击":0,"智力":0,"防御":0,"魔防":0,"技巧":0} # 初始化装备特效部队50血加成 字典
+zb_tx_50xyx = {"生命":0,"攻击":0,"智力":0,"防御":0,"魔防":0,"技巧":0} # 初始化装备特效部队50血以下加成 字典
 cjtx = {"生命":0,"攻击":0,"智力":0,"防御":0,"魔防":0,"技巧":0}  # 初始化超绝特效加成 字典
 fm4jc = {"生命":0,"攻击":0,"智力":0,"防御":0,"魔防":0,"技巧":0}  # 初始化附魔四件套加成 字典
+zwtxjc = {"生命":0,"攻击":0,"智力":0,"防御":0,"魔防":0,"技巧":0} # 初始化铸纹特效加成 字典
 qtzd_jc = {"生命":0,"攻击":0,"智力":0,"防御":0,"魔防":0,"技巧":0}  # 初始化其他战斗加成 字典
 qtzd_jc_gd = {"生命":0,"攻击":0,"智力":0,"防御":0,"魔防":0,"技巧":0}  # 初始化其他战斗 过渡 加成 字典
 zd_zjc = {"生命":0,"攻击":0,"智力":0,"防御":0,"魔防":0,"技巧":0}  # 初始化战斗总加成 字典
@@ -163,7 +169,7 @@ def load_data(file_path):
     df = pd.read_csv(file_path)  # 读取CSV文件
     return df
 # 加载数据
-csv_file_path = './data/梦战英雄白字.csv'  # 为实际文件路径
+csv_file_path = './data/梦战英雄数据.csv'  # 为实际文件路径
 df1 = load_data(csv_file_path)
 
 # 英雄选择
@@ -177,13 +183,20 @@ hero_jobs = df1[df1['英雄名'] == selected_hero]['职业名'].tolist()
 if hero_jobs:
     selected_job = st.selectbox("请选择职业",hero_jobs)
 
-column01,column02 = st.columns([0.5,1])
+# 选取选择结果的那一行数据
+selected_row = df1[(df1['英雄名'] == selected_hero) & (df1['职业名'] == selected_job)].iloc[0]
+
+column01,column010,column02 = st.columns([0.4,0.2,1])
 with column01:
     # 显示英雄头像
-    selected_hero_row = df1[df1['英雄名'] == selected_hero].iloc[0]
-    hero_image_url = selected_hero_row['英雄头像']  # 获取头像链接列的值
+    hero_image_url = selected_row['英雄头像']  # 获取头像链接列的值
     # 调整头像大小
     st.image(hero_image_url, caption=selected_hero, width=150)  # 设置宽度为150像素
+with column010:
+    # 显示职业图标
+    hero_jobs_image_url = selected_row['职业图标']  # 获取头像链接列的值
+    # 调整图标大小
+    st.image(hero_jobs_image_url, caption=selected_job, width=60)  # 设置宽度为60像素
 with column02:
     if selected_hero == "自定义英雄":
         bz["生命"] = mb_shuru(st.text_input("生命-白字", value="0"))  # 生命白字
@@ -194,7 +207,6 @@ with column02:
         bz["技巧"] = mb_shuru(st.text_input("技巧-白字", value="0"))  # 技巧白字
     else:
         # 根据选择的英雄和职业，获取属性值
-        selected_row = df1[(df1['英雄名'] == selected_hero) & (df1['职业名'] == selected_job)].iloc[0]
         bz = {
             "生命": selected_row["生命"],
             "攻击": selected_row["攻击"],
@@ -378,7 +390,7 @@ with tab1:
     column11, column12, column13 = st.columns([1, 0.1, 0.5])
     with column11:
         # 读取 装备基础属性CSV 文件
-        file_path = "./data/梦战装备满级基础属性分类.csv"  # 读取CSV文件路径
+        file_path = "./data/梦战装备满级数据.csv"  # 读取CSV文件路径
         df2 = load_data(file_path)
 
         # 将数据转换为字典，按“名称”索引
@@ -393,23 +405,90 @@ with tab1:
         # 用户选择框
         yx_wq = st.selectbox("请选择武器", wq_options)
         if yx_wq and yx_wq in zb_dict:
-            wq_jc = zb_dict[yx_wq]
-            st.markdown(f"武器代表:<span style='color:orange;font-size:16px;'> {zb_dict[yx_wq]['代表']}</span>",unsafe_allow_html=True)  # 显示武器的代表
+            # 选取选择结果的那一行数据
+            wq_selected_row = df2[(df2['装备名称'] == yx_wq)].iloc[0]
+            # 显示武器图片
+            wq_image_url = wq_selected_row['图片地址']  # 获取图片链接列的值
+            # 调整图片大小
+            st.image(wq_image_url, caption=yx_wq, width=100)  # 设置宽度为100像素
+            st.markdown(f"基础加成:<span style='color:green;font-size:16px;'> {zb_dict[yx_wq]['基础加成']}</span>",unsafe_allow_html=True)  # 显示武器基础加成
+            st.markdown(f"满级特效:<span style='color:orange;font-size:16px;'> {zb_dict[yx_wq]['满级特效']}</span>",unsafe_allow_html=True)  # 显示武器特效
+            # 根据选择的装备，获取属性值
+            wq_jc = {
+                "生命": wq_selected_row["生命"],
+                "攻击": wq_selected_row["攻击"],
+                "智力": wq_selected_row["智力"],
+                "防御": wq_selected_row["防御"],
+                "魔防": wq_selected_row["魔防"],
+                "技巧": wq_selected_row["技巧"],
+            }
+
+        # 分割线
+        st.divider()
 
         yx_yf = st.selectbox("请选择衣服", yf_options)
         if yx_yf and yx_yf in zb_dict:
-            yf_jc = zb_dict[yx_yf]
-            st.markdown(f"衣服代表:<span style='color:orange;font-size:16px;'>{zb_dict[yx_yf]['代表']}</span>",unsafe_allow_html=True)  # 显示衣服的代表
+            # 选取选择结果的那一行数据
+            yf_selected_row = df2[(df2['装备名称'] == yx_yf)].iloc[0]
+            # 显示武器图片
+            yf_image_url = yf_selected_row['图片地址']  # 获取图片链接列的值
+            # 调整图片大小
+            st.image(yf_image_url, caption=yx_yf, width=100)  # 设置宽度为100像素
+            st.markdown(f"基础加成:<span style='color:green;font-size:16px;'> {zb_dict[yx_yf]['基础加成']}</span>",unsafe_allow_html=True)  # 显示衣服基础加成
+            st.markdown(f"满级特效:<span style='color:orange;font-size:16px;'>{zb_dict[yx_yf]['满级特效']}</span>",unsafe_allow_html=True)  # 显示衣服特效
+            # 根据选择的装备，获取属性值
+            yf_jc = {
+                "生命": yf_selected_row["生命"],
+                "攻击": yf_selected_row["攻击"],
+                "智力": yf_selected_row["智力"],
+                "防御": yf_selected_row["防御"],
+                "魔防": yf_selected_row["魔防"],
+                "技巧": yf_selected_row["技巧"],
+            }
+
+        # 分割线
+        st.divider()
 
         yx_ts = st.selectbox("请选择头饰", ts_options)
         if yx_ts and yx_ts in zb_dict:
-            ts_jc = zb_dict[yx_ts]
-            st.markdown(f"头饰代表:<span style='color:orange;font-size:16px;'> {zb_dict[yx_ts]['代表']}</span>",unsafe_allow_html=True)  # 显示头饰的代表
+            # 选取选择结果的那一行数据
+            ts_selected_row = df2[(df2['装备名称'] == yx_ts)].iloc[0]
+            # 显示武器图片
+            ts_image_url = ts_selected_row['图片地址']  # 获取图片链接列的值
+            # 调整图片大小
+            st.image(ts_image_url, caption=yx_ts, width=100)  # 设置宽度为100像素
+            st.markdown(f"基础加成:<span style='color:green;font-size:16px;'> {zb_dict[yx_ts]['基础加成']}</span>",unsafe_allow_html=True)  # 显示头饰基础加成
+            st.markdown(f"满级特效:<span style='color:orange;font-size:16px;'> {zb_dict[yx_ts]['满级特效']}</span>",unsafe_allow_html=True)  # 显示头饰特效
+            ts_jc = {
+                "生命": yf_selected_row["生命"],
+                "攻击": yf_selected_row["攻击"],
+                "智力": yf_selected_row["智力"],
+                "防御": yf_selected_row["防御"],
+                "魔防": yf_selected_row["魔防"],
+                "技巧": yf_selected_row["技巧"],
+            }
+
+        # 分割线
+        st.divider()
 
         yx_sp = st.selectbox("请选择饰品", sp_options)
         if yx_sp and yx_sp in zb_dict:
-            sp_jc = zb_dict[yx_sp]
-            st.markdown(f"饰品代表:<span style='color:orange;font-size:16px;'> {zb_dict[yx_sp]['代表']}</span>",unsafe_allow_html=True)  # 显示饰品的代表
+            # 选取选择结果的那一行数据
+            sp_selected_row = df2[(df2['装备名称'] == yx_sp)].iloc[0]
+            # 显示武器图片
+            sp_image_url = sp_selected_row['图片地址']  # 获取图片链接列的值
+            # 调整图片大小
+            st.image(sp_image_url, caption=yx_sp, width=100)  # 设置宽度为100像素
+            st.markdown(f"基础加成:<span style='color:green;font-size:16px;'> {zb_dict[yx_sp]['基础加成']}</span>",unsafe_allow_html=True)  # 显示饰品基础加成
+            st.markdown(f"满级特效:<span style='color:orange;font-size:16px;'> {zb_dict[yx_sp]['满级特效']}</span>",unsafe_allow_html=True)  # 显示饰品特效
+            sp_jc = {
+                "生命": yf_selected_row["生命"],
+                "攻击": yf_selected_row["攻击"],
+                "智力": yf_selected_row["智力"],
+                "防御": yf_selected_row["防御"],
+                "魔防": yf_selected_row["魔防"],
+                "技巧": yf_selected_row["技巧"],
+            }
 
     with column13:
         # 相加各部分基础值
@@ -737,11 +816,16 @@ df1 = pd.DataFrame(lz_jc_data, index=["生命", "攻击", "智力", "防御", "�
 # 显示为DataFrame
 st.dataframe(df1,use_container_width=True)
 
-column001, column002 = st.columns([0.5,1])
-
+column001, column0010, column002 = st.columns([0.4,0.2,1])
 with column001:
     st.write("")
     st.image(hero_image_url, caption=selected_hero, width=150)  # 设置宽度为150像素
+with column0010:
+    st.write("")
+    # 显示职业图标
+    hero_jobs_image_url = selected_row['职业图标']  # 获取头像链接列的值
+    # 调整图标大小
+    st.image(hero_jobs_image_url, caption=selected_job, width=60)  # 设置宽度为60像素
 with column002:
     st.markdown(f"#### 生命: {bz["生命"]} <strong><span style='color:green;font-size:25px;'> + {lz["生命"]}</span></strong>",unsafe_allow_html=True)
     st.markdown(f"#### 攻击: {bz["攻击"]} <strong><span style='color:green;font-size:25px;'> + {lz["攻击"]}</span></strong>",unsafe_allow_html=True)
@@ -820,132 +904,293 @@ with column75:
 # 分割线
 st.divider()
 
-options_jjc_pd = ["是", "否"]
-jjc_pd = st.radio("是否竞技场", options_jjc_pd)
-
-column81, column82, column83, column84, column85 = st.columns([0.7, 0.9, 0.9, 1, 1])
-
+column81, column82, column83 = st.columns([1, 1, 1])
 with column81:
-    zb_tx_gd["生命"] = st.text_input("装备特效生命%", value=0)  # 装备特效生命加成百分比
-    zb_tx["生命"] = bfb_shuru(zb_tx_gd["生命"])
-    zb_tx_gd["攻击"] = st.text_input("装备特效攻击%", value=0)  # 装备特效攻击加成百分比
-    zb_tx["攻击"] = bfb_shuru(zb_tx_gd["攻击"])
-    zb_tx_gd["智力"] = st.text_input("装备特效智力%", value=0)  # 装备特效智力加成百分比
-    zb_tx["智力"] = bfb_shuru(zb_tx_gd["智力"])
-    zb_tx_gd["防御"] = st.text_input("装备特效防御%", value=0)  # 装备特效防御加成百分比
-    zb_tx["防御"] = bfb_shuru(zb_tx_gd["防御"])
-    zb_tx_gd["魔防"] = st.text_input("装备特效魔防%", value=0)  # 装备特效魔防加成百分比
-    zb_tx["魔防"] = bfb_shuru(zb_tx_gd["魔防"])
-    zb_tx_gd["技巧"] = st.text_input("装备特效技巧%", value=0)  # 装备特效技巧加成百分比
-    zb_tx["技巧"] = bfb_shuru(zb_tx_gd["技巧"])
-
+    options_jjc_pd = ["是", "否"]
+    jjc_pd = st.radio("是否竞技场", options_jjc_pd)
 with column82:
     options_cj_pd = ["未开", "开"]
     cj_pd = st.radio("是否开启超绝特效", options_cj_pd)
-    if cj_pd == "未开":
-        cjtx["攻击"] = 0
-        cjtx["智力"] = 0
-        cjtx["防御"] = 0
-        cjtx["魔防"] = 0
-    else:
-        cjtx["攻击"] = 0.2
-        cjtx["智力"] = 0.2
-        cjtx["防御"] = 0.2
-        cjtx["魔防"] = 0.3
-    st.markdown(f"#### 生命: <strong><span style='font-size:25px;'> +{round(cjtx["生命"]*100)}%</span></strong>",unsafe_allow_html=True)
-    if cj_pd == "未开":
-        st.markdown(f"#### 攻击: <strong><span style='font-size:25px;'> +{round(cjtx["攻击"]*100)}%</span></strong>",unsafe_allow_html=True)
-        st.markdown(f"#### 智力: <strong><span style='font-size:25px;'> +{round(cjtx["智力"]*100)}%</span></strong>",unsafe_allow_html=True)
-        st.markdown(f"#### 防御: <strong><span style='font-size:25px;'> +{round(cjtx["防御"]*100)}%</span></strong>",unsafe_allow_html=True)
-        st.markdown(f"#### 魔防: <strong><span style='font-size:25px;'> +{round(cjtx["魔防"]*100)}%</span></strong>",unsafe_allow_html=True)
-    else:
-        st.markdown(f"#### 攻击: <strong><span style='color:green;font-size:25px;'> +{round(cjtx["攻击"]*100)}%</span></strong>",unsafe_allow_html=True)
-        st.markdown(f"#### 智力: <strong><span style='color:green;font-size:25px;'> +{round(cjtx["智力"]*100)}%</span></strong>",unsafe_allow_html=True)
-        st.markdown(f"#### 防御: <strong><span style='color:green;font-size:25px;'> +{round(cjtx["防御"]*100)}%</span></strong>",unsafe_allow_html=True)
-        st.markdown(f"#### 魔防: <strong><span style='color:green;font-size:25px;'> +{round(cjtx["魔防"]*100)}%</span></strong>",unsafe_allow_html=True)
-    st.markdown(f"#### 技巧: <strong><span style='font-size:25px;'> +{round(cjtx["技巧"]*100)}%</span></strong>",unsafe_allow_html=True)
-
 with column83:
     if sdsr_pd:
-        if gm_fm_1 == "满月" and gm_fm_2 == "满月":
-            st.write("#### 附魔：满月")
-            fm4jc["攻击"] = 0.1
-            fm4jc["智力"] = 0.1
-            fm4jc["防御"] = 0.1
-            fm4jc["魔防"] = 0.1
-        elif gm_fm_1 == "怒涛" and gm_fm_2 == "怒涛":
-            st.write("#### 附魔：怒涛")
-            fm4jc["攻击"] = 0.1
-        elif gm_fm_1 == "大树" and gm_fm_2 == "大树":
-            st.write("#### 附魔：大树")
-            fm4jc["防御"] = 0.05
-            fm4jc["魔防"] = 0.05
-        else:
-            st.write("#### 附魔无加成")
-            fm4jc["生命"] = 0
-            fm4jc["攻击"] = 0
-            fm4jc["智力"] = 0
-            fm4jc["防御"] = 0
-            fm4jc["魔防"] = 0
-            fm4jc["技巧"] = 0
+        options_bdxl_pd = ["满血","80%以上但未满血","50%以上但80%以下","50%以下"]
+        bdxl_pd = st.radio("部队血量情况", options_bdxl_pd)
 
-        st.markdown(f"#### 生命: <strong><span style='font-size:25px;'> +{round(fm4jc["生命"]*100)}%</span></strong>",unsafe_allow_html=True)
-        if gm_fm_1 == "满月" and gm_fm_2 == "满月":
-            st.markdown(f"#### 攻击: <strong><span style='color:green;font-size:25px;'> +{round(fm4jc["攻击"] * 100)}%</span></strong>", unsafe_allow_html=True)
-            st.markdown(f"#### 智力: <strong><span style='color:green;font-size:25px;'> +{round(fm4jc["智力"] * 100)}%</span></strong>", unsafe_allow_html=True)
-            st.markdown(f"#### 防御: <strong><span style='color:green;font-size:25px;'> +{round(fm4jc["防御"] * 100)}%</span></strong>", unsafe_allow_html=True)
-            st.markdown(f"#### 魔防: <strong><span style='color:green;font-size:25px;'> +{round(fm4jc["魔防"] * 100)}%</span></strong>", unsafe_allow_html=True)
-        elif gm_fm_1 == "怒涛" and gm_fm_2 == "怒涛":
-            st.markdown(f"#### 攻击: <strong><span style='color:green;font-size:25px;'> +{round(fm4jc["攻击"] * 100)}%</span></strong>", unsafe_allow_html=True)
-            st.markdown(f"#### 智力: <strong><span style='font-size:25px;'> +{round(fm4jc["智力"] * 100)}%</span></strong>", unsafe_allow_html=True)
-            st.markdown(f"#### 防御: <strong><span style='font-size:25px;'> +{round(fm4jc["防御"] * 100)}%</span></strong>", unsafe_allow_html=True)
-            st.markdown(f"#### 魔防: <strong><span style='font-size:25px;'> +{round(fm4jc["魔防"] * 100)}%</span></strong>", unsafe_allow_html=True)
-        elif gm_fm_1 == "大树" and gm_fm_2 == "大树":
-            st.markdown(f"#### 攻击: <strong><span style='font-size:25px;'> +{round(fm4jc["攻击"]*100)}%</span></strong>",unsafe_allow_html=True)
-            st.markdown(f"#### 智力: <strong><span style='font-size:25px;'> +{round(fm4jc["智力"]*100)}%</span></strong>",unsafe_allow_html=True)
-            st.markdown(f"#### 防御: <strong><span style='color:green;font-size:25px;'> +{round(fm4jc["防御"]*100)}%</span></strong>",unsafe_allow_html=True)
-            st.markdown(f"#### 魔防: <strong><span style='color:green;font-size:25px;'> +{round(fm4jc["魔防"]*100)}%</span></strong>",unsafe_allow_html=True)
-        else:
-            st.markdown(f"#### 攻击: <strong><span style='font-size:25px;'> +{round(fm4jc["攻击"]*100)}%</span></strong>",unsafe_allow_html=True)
-            st.markdown(f"#### 智力: <strong><span style='font-size:25px;'> +{round(fm4jc["智力"]*100)}%</span></strong>",unsafe_allow_html=True)
-            st.markdown(f"#### 防御: <strong><span style='font-size:25px;'> +{round(fm4jc["防御"]*100)}%</span></strong>",unsafe_allow_html=True)
-            st.markdown(f"#### 魔防: <strong><span style='font-size:25px;'> +{round(fm4jc["魔防"]*100)}%</span></strong>",unsafe_allow_html=True)
-        st.markdown(f"#### 技巧: <strong><span style='font-size:25px;'> +{round(fm4jc["技巧"]*100)}%</span></strong>",unsafe_allow_html=True)
-    else:
-        st.write("#### 附魔加成")
-        fm4jc["生命"] = bfb_shuru(st.text_input("生命%", key="fm4jc_sm", value="0"))
-        fm4jc["攻击"] = bfb_shuru(st.text_input("攻击%", key="fm4jc_gj", value="0"))
-        fm4jc["智力"] = bfb_shuru(st.text_input("智力%", key="fm4jc_zl", value="0"))
-        fm4jc["防御"] = bfb_shuru(st.text_input("防御%", key="fm4jc_fy", value="0"))
-        fm4jc["魔防"] = bfb_shuru(st.text_input("魔防%", key="fm4jc_mf", value="0"))
-        fm4jc["技巧"] = bfb_shuru(st.text_input("技巧%", key="fm4jc_jq", value="0"))
-
+column84,column845,column85= st.columns([1,0.1,0.3])
 
 with column84:
-    st.write("#### 战场其他加成")
-    qtzd_jc_gd["生命"] = st.text_input("战场其他加成生命%", value=0)  # 战斗其他加成生命百分比
-    qtzd_jc["生命"] = bfb_shuru(qtzd_jc_gd["生命"])
-    qtzd_jc_gd["攻击"] = st.text_input("战场其他加成攻击%", value=0)  # 战斗其他加成攻击百分比
-    qtzd_jc["攻击"] = bfb_shuru(qtzd_jc_gd["攻击"])
-    qtzd_jc_gd["智力"] = st.text_input("战场其他加成智力%", value=0)  # 战斗其他加成智力百分比
-    qtzd_jc["智力"] = bfb_shuru(qtzd_jc_gd["智力"])
-    qtzd_jc_gd["防御"] = st.text_input("战场其他加成防御%", value=0)  # 战斗其他加成防御百分比
-    qtzd_jc["防御"] = bfb_shuru(qtzd_jc_gd["防御"])
-    qtzd_jc_gd["魔防"] = st.text_input("战场其他加成魔防%", value=0)  # 战斗其他加成魔防百分比
-    qtzd_jc["魔防"] = bfb_shuru(qtzd_jc_gd["魔防"])
-    qtzd_jc_gd["技巧"] = st.text_input("战场其他加成技巧%", value=0)  # 战斗其他加成技巧百分比
-    qtzd_jc["技巧"] = bfb_shuru(qtzd_jc_gd["技巧"])
+
+    tab7,tab8,tab9,tab10,tab11 = st.tabs(["装备特效","附魔共鸣","超绝特效","铸纹特效","战场其他加成（手输）"])
+
+    with tab7:
+
+        if sdsr_pd:
+
+            columnzb01,columnzb02= st.columns([1,0.4])
+
+            with columnzb01:
+                st.image(wq_image_url, caption=yx_wq, width=80)  # 设置宽度为100像素
+                st.markdown(f"特效:<span style='color:orange;font-size:16px;'> {zb_dict[yx_wq]['满级特效']}</span>",unsafe_allow_html=True)  # 显示武器特效
+                st.image(yf_image_url, caption=yx_yf, width=80)  # 设置宽度为100像素
+                st.markdown(f"特效:<span style='color:orange;font-size:16px;'> {zb_dict[yx_yf]['满级特效']}</span>",unsafe_allow_html=True)  # 显示衣服特效
+                st.image(ts_image_url, caption=yx_ts, width=80)  # 设置宽度为100像素
+                st.markdown(f"特效:<span style='color:orange;font-size:16px;'> {zb_dict[yx_ts]['满级特效']}</span>",unsafe_allow_html=True)  # 显示头饰特效
+                st.image(sp_image_url, caption=yx_sp, width=80)  # 设置宽度为100像素
+                st.markdown(f"特效:<span style='color:orange;font-size:16px;'> {zb_dict[yx_sp]['满级特效']}</span>",unsafe_allow_html=True)  # 显示饰品特效
+
+                zb_tx_cz = {
+                    "生命": wq_selected_row["常驻生命"] + yf_selected_row["常驻生命"] + ts_selected_row["常驻生命"] + sp_selected_row["常驻生命"],
+                    "攻击": wq_selected_row["常驻攻击"] + yf_selected_row["常驻攻击"] + ts_selected_row["常驻攻击"] + sp_selected_row["常驻攻击"],
+                    "智力": wq_selected_row["常驻智力"] + yf_selected_row["常驻智力"] + ts_selected_row["常驻智力"] + sp_selected_row["常驻智力"],
+                    "防御": wq_selected_row["常驻防御"] + yf_selected_row["常驻防御"] + ts_selected_row["常驻防御"] + sp_selected_row["常驻防御"],
+                    "魔防": wq_selected_row["常驻魔防"] + yf_selected_row["常驻魔防"] + ts_selected_row["常驻魔防"] + sp_selected_row["常驻魔防"],
+                    "技巧": wq_selected_row["常驻技巧"] + yf_selected_row["常驻技巧"] + ts_selected_row["常驻技巧"] + sp_selected_row["常驻技巧"],
+                }
+
+                if bdxl_pd == "满血":
+                    zb_tx_mx = {
+                        "生命": wq_selected_row["满血生命"] + yf_selected_row["满血生命"] + ts_selected_row["满血生命"] + sp_selected_row["满血生命"],
+                        "攻击": wq_selected_row["满血攻击"] + yf_selected_row["满血攻击"] + ts_selected_row["满血攻击"] + sp_selected_row["满血攻击"],
+                        "智力": wq_selected_row["满血智力"] + yf_selected_row["满血智力"] + ts_selected_row["满血智力"] + sp_selected_row["满血智力"],
+                        "防御": wq_selected_row["满血防御"] + yf_selected_row["满血防御"] + ts_selected_row["满血防御"] + sp_selected_row["满血防御"],
+                        "魔防": wq_selected_row["满血魔防"] + yf_selected_row["满血魔防"] + ts_selected_row["满血魔防"] + sp_selected_row["满血魔防"],
+                        "技巧": wq_selected_row["满血技巧"] + yf_selected_row["满血技巧"] + ts_selected_row["满血技巧"] + sp_selected_row["满血技巧"],
+                    }
+                if bdxl_pd == "满血" or bdxl_pd == "80%以上但未满血":
+                    zb_tx_80x = {
+                        "生命": wq_selected_row["80血生命"] + yf_selected_row["80血生命"] + ts_selected_row["80血生命"] + sp_selected_row["80血生命"],
+                        "攻击": wq_selected_row["80血攻击"] + yf_selected_row["80血攻击"] + ts_selected_row["80血攻击"] + sp_selected_row["80血攻击"],
+                        "智力": wq_selected_row["80血智力"] + yf_selected_row["80血智力"] + ts_selected_row["80血智力"] + sp_selected_row["80血智力"],
+                        "防御": wq_selected_row["80血防御"] + yf_selected_row["80血防御"] + ts_selected_row["80血防御"] + sp_selected_row["80血防御"],
+                        "魔防": wq_selected_row["80血魔防"] + yf_selected_row["80血魔防"] + ts_selected_row["80血魔防"] + sp_selected_row["80血魔防"],
+                        "技巧": wq_selected_row["80血技巧"] + yf_selected_row["80血技巧"] + ts_selected_row["80血技巧"] + sp_selected_row["80血技巧"],
+                    }
+                if bdxl_pd == "满血" or bdxl_pd == "80%以上但未满血" or bdxl_pd == "50%以上但80%以下":
+                    zb_tx_50x = {
+                        "生命": wq_selected_row["50血生命"] + yf_selected_row["50血生命"] + ts_selected_row["50血生命"] + sp_selected_row["50血生命"],
+                        "攻击": wq_selected_row["50血攻击"] + yf_selected_row["50血攻击"] + ts_selected_row["50血攻击"] + sp_selected_row["50血攻击"],
+                        "智力": wq_selected_row["50血智力"] + yf_selected_row["50血智力"] + ts_selected_row["50血智力"] + sp_selected_row["50血智力"],
+                        "防御": wq_selected_row["50血防御"] + yf_selected_row["50血防御"] + ts_selected_row["50血防御"] + sp_selected_row["50血防御"],
+                        "魔防": wq_selected_row["50血魔防"] + yf_selected_row["50血魔防"] + ts_selected_row["50血魔防"] + sp_selected_row["50血魔防"],
+                        "技巧": wq_selected_row["50血技巧"] + yf_selected_row["50血技巧"] + ts_selected_row["50血技巧"] + sp_selected_row["50血技巧"],
+                    }
+                if bdxl_pd == "50%以下":
+                    zb_tx_50xyx = {
+                        "生命": wq_selected_row["50血以下生命"] + yf_selected_row["50血以下生命"] + ts_selected_row["50血以下生命"] + sp_selected_row["50血以下生命"],
+                        "攻击": wq_selected_row["50血以下攻击"] + yf_selected_row["50血以下攻击"] + ts_selected_row["50血以下攻击"] + sp_selected_row["50血以下攻击"],
+                        "智力": wq_selected_row["50血以下智力"] + yf_selected_row["50血以下智力"] + ts_selected_row["50血以下智力"] + sp_selected_row["50血以下智力"],
+                        "防御": wq_selected_row["50血以下防御"] + yf_selected_row["50血以下防御"] + ts_selected_row["50血以下防御"] + sp_selected_row["50血以下防御"],
+                        "魔防": wq_selected_row["50血以下魔防"] + yf_selected_row["50血以下魔防"] + ts_selected_row["50血以下魔防"] + sp_selected_row["50血以下魔防"],
+                        "技巧": wq_selected_row["50血以下技巧"] + yf_selected_row["50血以下技巧"] + ts_selected_row["50血以下技巧"] + sp_selected_row["50血以下技巧"],
+                    }
+
+                zb_tx["生命"] = zb_tx_cz["生命"] + zb_tx_mx["生命"] + zb_tx_80x["生命"] + zb_tx_50x["生命"] + zb_tx_50xyx["生命"]
+                zb_tx["攻击"] = zb_tx_cz["攻击"] + zb_tx_mx["攻击"] + zb_tx_80x["攻击"] + zb_tx_50x["攻击"] + zb_tx_50xyx["攻击"]
+                zb_tx["智力"] = zb_tx_cz["智力"] + zb_tx_mx["智力"] + zb_tx_80x["智力"] + zb_tx_50x["智力"] + zb_tx_50xyx["智力"]
+                zb_tx["防御"] = zb_tx_cz["防御"] + zb_tx_mx["防御"] + zb_tx_80x["防御"] + zb_tx_50x["防御"] + zb_tx_50xyx["防御"]
+                zb_tx["魔防"] = zb_tx_cz["魔防"] + zb_tx_mx["魔防"] + zb_tx_80x["魔防"] + zb_tx_50x["魔防"] + zb_tx_50xyx["魔防"]
+                zb_tx["技巧"] = zb_tx_cz["技巧"] + zb_tx_mx["技巧"] + zb_tx_80x["技巧"] + zb_tx_50x["技巧"] + zb_tx_50xyx["技巧"]
+
+            with columnzb02:
+                if zb_tx["生命"]>0:
+                    st.markdown(f"#### 生命: <span style='color:green;font-size:25px;'> +{round(zb_tx["生命"]*100)}%</span>",unsafe_allow_html=True)
+                else:
+                    st.markdown(f"#### 生命: <strong><span style='font-size:25px;'> +{round(zb_tx["生命"]*100)}%</span></strong>",unsafe_allow_html=True)
+                if zb_tx["攻击"]>0:
+                    st.markdown(f"#### 攻击: <span style='color:green;font-size:25px;'> +{round(zb_tx["攻击"]*100)}%</span>",unsafe_allow_html=True)
+                else:
+                    st.markdown(f"#### 攻击: <strong><span style='font-size:25px;'> +{round(zb_tx["攻击"]*100)}%</span></strong>",unsafe_allow_html=True)
+                if zb_tx["智力"]>0:
+                    st.markdown(f"#### 智力: <span style='color:green;font-size:25px;'> +{round(zb_tx["智力"]*100)}%</span>",unsafe_allow_html=True)
+                else:
+                    st.markdown(f"#### 智力: <strong><span style='font-size:25px;'> +{round(zb_tx["智力"]*100)}%</span></strong>",unsafe_allow_html=True)
+                if zb_tx["防御"]>0:
+                    st.markdown(f"#### 防御: <span style='color:green;font-size:25px;'> +{round(zb_tx["防御"]*100)}%</span>",unsafe_allow_html=True)
+                else:
+                    st.markdown(f"#### 防御: <strong><span style='font-size:25px;'> +{round(zb_tx["防御"]*100)}%</span></strong>",unsafe_allow_html=True)
+                if zb_tx["魔防"]>0:
+                    st.markdown(f"#### 魔防: <span style='color:green;font-size:25px;'> +{round(zb_tx["魔防"]*100)}%</span>",unsafe_allow_html=True)
+                else:
+                    st.markdown(f"#### 魔防: <strong><span style='font-size:25px;'> +{round(zb_tx["魔防"]*100)}%</span></strong>",unsafe_allow_html=True)
+                if zb_tx["技巧"]>0:
+                    st.markdown(f"#### 技巧: <span style='color:green;font-size:25px;'> +{round(zb_tx["技巧"]*100)}%</span>",unsafe_allow_html=True)
+                else:
+                    st.markdown(f"#### 技巧: <strong><span style='font-size:25px;'> +{round(zb_tx["技巧"]*100)}%</span></strong>",unsafe_allow_html=True)
+
+        else:
+            zb_tx_gd["生命"] = st.text_input("装备特效生命%", value=0)  # 装备特效生命加成百分比
+            zb_tx["生命"] = bfb_shuru(zb_tx_gd["生命"])
+            zb_tx_gd["攻击"] = st.text_input("装备特效攻击%", value=0)  # 装备特效攻击加成百分比
+            zb_tx["攻击"] = bfb_shuru(zb_tx_gd["攻击"])
+            zb_tx_gd["智力"] = st.text_input("装备特效智力%", value=0)  # 装备特效智力加成百分比
+            zb_tx["智力"] = bfb_shuru(zb_tx_gd["智力"])
+            zb_tx_gd["防御"] = st.text_input("装备特效防御%", value=0)  # 装备特效防御加成百分比
+            zb_tx["防御"] = bfb_shuru(zb_tx_gd["防御"])
+            zb_tx_gd["魔防"] = st.text_input("装备特效魔防%", value=0)  # 装备特效魔防加成百分比
+            zb_tx["魔防"] = bfb_shuru(zb_tx_gd["魔防"])
+            zb_tx_gd["技巧"] = st.text_input("装备特效技巧%", value=0)  # 装备特效技巧加成百分比
+            zb_tx["技巧"] = bfb_shuru(zb_tx_gd["技巧"])
+
+    with tab8:
+        if sdsr_pd:
+            if gm_fm_1 == "满月" and gm_fm_2 == "满月" and (bdxl_pd == "满血" or bdxl_pd == "80%以上但未满血"):
+                st.markdown(f"满月4件加成：<strong><span style='color:orange;font-size:16px;'> 生命80%以上，所有攻防属性提升10% </span></strong>", unsafe_allow_html=True)
+                fm4jc["攻击"] = 0.1
+                fm4jc["智力"] = 0.1
+                fm4jc["防御"] = 0.1
+                fm4jc["魔防"] = 0.1
+            elif gm_fm_1 == "怒涛" and gm_fm_2 == "怒涛":
+                st.markdown(f"怒涛4件加成：<strong><span style='color:orange;font-size:16px;'> 主动攻击进入战斗时，攻击+10%，遭受伤害降低15% </span></strong>", unsafe_allow_html=True)
+                fm4jc["攻击"] = 0.1
+            elif gm_fm_1 == "大树" and gm_fm_2 == "大树":
+                st.markdown(f"大树4件加成：<strong><span style='color:orange;font-size:16px;'> 周围2格所有英雄防御、魔防提升5% </span></strong>", unsafe_allow_html=True)
+                fm4jc["防御"] = 0.05
+                fm4jc["魔防"] = 0.05
+            else:
+                st.markdown(f"附魔4件共鸣加成情况：<strong><span style='color:orange;font-size:16px;'> 无加成 </span></strong>", unsafe_allow_html=True)
+                fm4jc["生命"] = 0
+                fm4jc["攻击"] = 0
+                fm4jc["智力"] = 0
+                fm4jc["防御"] = 0
+                fm4jc["魔防"] = 0
+                fm4jc["技巧"] = 0
+
+            columnfm1, columnfm2, columnfm3 = st.columns([0.3, 1, 0.5])
+
+            with columnfm1:
+                st.write("")
+                if gm_fm_1 != "无":
+                    st.image(fm1_image_url1, width=35)  # 设置宽度为35像素
+                    st.image(fm1_image_url2, width=35)  # 设置宽度为35像素
+                if gm_fm_2 != "无":
+                    st.image(fm2_image_url1, width=35)  # 设置宽度为35像素
+                    st.image(fm2_image_url2, width=35)  # 设置宽度为35像素
+            with columnfm2:
+                st.markdown(f"#### 生命: <strong><span style='font-size:25px;'> +{round(fm4jc["生命"]*100)}%</span></strong>",unsafe_allow_html=True)
+                if gm_fm_1 == "满月" and gm_fm_2 == "满月" and (bdxl_pd == "满血" or bdxl_pd == "80%以上但未满血"):
+                    st.markdown(f"#### 攻击: <strong><span style='color:green;font-size:25px;'> +{round(fm4jc["攻击"] * 100)}%</span></strong>", unsafe_allow_html=True)
+                    st.markdown(f"#### 智力: <strong><span style='color:green;font-size:25px;'> +{round(fm4jc["智力"] * 100)}%</span></strong>", unsafe_allow_html=True)
+                    st.markdown(f"#### 防御: <strong><span style='color:green;font-size:25px;'> +{round(fm4jc["防御"] * 100)}%</span></strong>", unsafe_allow_html=True)
+                    st.markdown(f"#### 魔防: <strong><span style='color:green;font-size:25px;'> +{round(fm4jc["魔防"] * 100)}%</span></strong>", unsafe_allow_html=True)
+                elif gm_fm_1 == "怒涛" and gm_fm_2 == "怒涛":
+                    st.markdown(f"#### 攻击: <strong><span style='color:green;font-size:25px;'> +{round(fm4jc["攻击"] * 100)}%</span></strong>", unsafe_allow_html=True)
+                    st.markdown(f"#### 智力: <strong><span style='font-size:25px;'> +{round(fm4jc["智力"] * 100)}%</span></strong>", unsafe_allow_html=True)
+                    st.markdown(f"#### 防御: <strong><span style='font-size:25px;'> +{round(fm4jc["防御"] * 100)}%</span></strong>", unsafe_allow_html=True)
+                    st.markdown(f"#### 魔防: <strong><span style='font-size:25px;'> +{round(fm4jc["魔防"] * 100)}%</span></strong>", unsafe_allow_html=True)
+                elif gm_fm_1 == "大树" and gm_fm_2 == "大树":
+                    st.markdown(f"#### 攻击: <strong><span style='font-size:25px;'> +{round(fm4jc["攻击"]*100)}%</span></strong>",unsafe_allow_html=True)
+                    st.markdown(f"#### 智力: <strong><span style='font-size:25px;'> +{round(fm4jc["智力"]*100)}%</span></strong>",unsafe_allow_html=True)
+                    st.markdown(f"#### 防御: <strong><span style='color:green;font-size:25px;'> +{round(fm4jc["防御"]*100)}%</span></strong>",unsafe_allow_html=True)
+                    st.markdown(f"#### 魔防: <strong><span style='color:green;font-size:25px;'> +{round(fm4jc["魔防"]*100)}%</span></strong>",unsafe_allow_html=True)
+                else:
+                    st.markdown(f"#### 攻击: <strong><span style='font-size:25px;'> +{round(fm4jc["攻击"]*100)}%</span></strong>",unsafe_allow_html=True)
+                    st.markdown(f"#### 智力: <strong><span style='font-size:25px;'> +{round(fm4jc["智力"]*100)}%</span></strong>",unsafe_allow_html=True)
+                    st.markdown(f"#### 防御: <strong><span style='font-size:25px;'> +{round(fm4jc["防御"]*100)}%</span></strong>",unsafe_allow_html=True)
+                    st.markdown(f"#### 魔防: <strong><span style='font-size:25px;'> +{round(fm4jc["魔防"]*100)}%</span></strong>",unsafe_allow_html=True)
+                st.markdown(f"#### 技巧: <strong><span style='font-size:25px;'> +{round(fm4jc["技巧"]*100)}%</span></strong>",unsafe_allow_html=True)
+        else:
+            fm4jc["生命"] = bfb_shuru(st.text_input("生命%", key="fm4jc_sm", value="0"))
+            fm4jc["攻击"] = bfb_shuru(st.text_input("攻击%", key="fm4jc_gj", value="0"))
+            fm4jc["智力"] = bfb_shuru(st.text_input("智力%", key="fm4jc_zl", value="0"))
+            fm4jc["防御"] = bfb_shuru(st.text_input("防御%", key="fm4jc_fy", value="0"))
+            fm4jc["魔防"] = bfb_shuru(st.text_input("魔防%", key="fm4jc_mf", value="0"))
+            fm4jc["技巧"] = bfb_shuru(st.text_input("技巧%", key="fm4jc_jq", value="0"))
+
+    with tab9:
+        if cj_pd == "未开":
+            cjtx["攻击"] = 0
+            cjtx["智力"] = 0
+            cjtx["防御"] = 0
+            cjtx["魔防"] = 0
+            st.markdown(f"超绝开启情况:<span style='color:orange;font-size:16px;'> 未开 </span>",unsafe_allow_html=True)
+        else:
+            cjtx["攻击"] = 0.2
+            cjtx["智力"] = 0.2
+            cjtx["防御"] = 0.2
+            cjtx["魔防"] = 0.3
+            st.markdown(f"超绝开启情况:<span style='color:orange;font-size:16px;'> 已开 </span>", unsafe_allow_html=True)
+        st.markdown(f"#### 生命: <strong><span style='font-size:25px;'> +{round(cjtx["生命"]*100)}%</span></strong>",unsafe_allow_html=True)
+        if cj_pd == "未开":
+            st.markdown(f"#### 攻击: <strong><span style='font-size:25px;'> +{round(cjtx["攻击"]*100)}%</span></strong>",unsafe_allow_html=True)
+            st.markdown(f"#### 智力: <strong><span style='font-size:25px;'> +{round(cjtx["智力"]*100)}%</span></strong>",unsafe_allow_html=True)
+            st.markdown(f"#### 防御: <strong><span style='font-size:25px;'> +{round(cjtx["防御"]*100)}%</span></strong>",unsafe_allow_html=True)
+            st.markdown(f"#### 魔防: <strong><span style='font-size:25px;'> +{round(cjtx["魔防"]*100)}%</span></strong>",unsafe_allow_html=True)
+        else:
+            st.markdown(f"#### 攻击: <strong><span style='color:green;font-size:25px;'> +{round(cjtx["攻击"]*100)}%</span></strong>",unsafe_allow_html=True)
+            st.markdown(f"#### 智力: <strong><span style='color:green;font-size:25px;'> +{round(cjtx["智力"]*100)}%</span></strong>",unsafe_allow_html=True)
+            st.markdown(f"#### 防御: <strong><span style='color:green;font-size:25px;'> +{round(cjtx["防御"]*100)}%</span></strong>",unsafe_allow_html=True)
+            st.markdown(f"#### 魔防: <strong><span style='color:green;font-size:25px;'> +{round(cjtx["魔防"]*100)}%</span></strong>",unsafe_allow_html=True)
+        st.markdown(f"#### 技巧: <strong><span style='font-size:25px;'> +{round(cjtx["技巧"]*100)}%</span></strong>",unsafe_allow_html=True)
+
+    with tab10:
+        st.write("")
+        if sdsr_pd:
+            st.markdown(f"铸纹特效:<span style='color:orange;font-size:16px;'> {selected_row['铸纹特效']}</span>",unsafe_allow_html=True)
+            zwtxjc = {
+                "生命": selected_row["铸纹特效生命"],
+                "攻击": selected_row["铸纹特效攻击"],
+                "智力": selected_row["铸纹特效智力"],
+                "防御": selected_row["铸纹特效防御"],
+                "魔防": selected_row["铸纹特效魔防"],
+                "技巧": selected_row["铸纹特效技巧"],
+            }
+            if zwtxjc["生命"]>0:
+                st.markdown(f"#### 生命: <span style='color:green;font-size:25px;'> +{round(zwtxjc["生命"]*100)}%</span>",unsafe_allow_html=True)
+            else:
+                st.markdown(f"#### 生命: <strong><span style='font-size:25px;'> +{round(zwtxjc["生命"]*100)}%</span></strong>",unsafe_allow_html=True)
+            if zwtxjc["攻击"]>0:
+                st.markdown(f"#### 攻击: <span style='color:green;font-size:25px;'> +{round(zwtxjc["攻击"]*100)}%</span>",unsafe_allow_html=True)
+            else:
+                st.markdown(f"#### 攻击: <strong><span style='font-size:25px;'> +{round(zwtxjc["攻击"]*100)}%</span></strong>",unsafe_allow_html=True)
+            if zwtxjc["智力"]>0:
+                st.markdown(f"#### 智力: <span style='color:green;font-size:25px;'> +{round(zwtxjc["智力"]*100)}%</span>",unsafe_allow_html=True)
+            else:
+                st.markdown(f"#### 智力: <strong><span style='font-size:25px;'> +{round(zwtxjc["智力"]*100)}%</span></strong>",unsafe_allow_html=True)
+            if zwtxjc["防御"]>0:
+                st.markdown(f"#### 防御: <span style='color:green;font-size:25px;'> +{round(zwtxjc["防御"]*100)}%</span>",unsafe_allow_html=True)
+            else:
+                st.markdown(f"#### 防御: <strong><span style='font-size:25px;'> +{round(zwtxjc["防御"]*100)}%</span></strong>",unsafe_allow_html=True)
+            if zwtxjc["魔防"]>0:
+                st.markdown(f"#### 魔防: <span style='color:green;font-size:25px;'> +{round(zwtxjc["魔防"]*100)}%</span>",unsafe_allow_html=True)
+            else:
+                st.markdown(f"#### 魔防: <strong><span style='font-size:25px;'> +{round(zwtxjc["魔防"]*100)}%</span></strong>",unsafe_allow_html=True)
+            if zwtxjc["技巧"]>0:
+                st.markdown(f"#### 技巧: <span style='color:green;font-size:25px;'> +{round(zwtxjc["技巧"]*100)}%</span>",unsafe_allow_html=True)
+            else:
+                st.markdown(f"#### 技巧: <strong><span style='font-size:25px;'> +{round(zwtxjc["技巧"]*100)}%</span></strong>",unsafe_allow_html=True)
+        else:
+            zwtxjc["生命"] = bfb_shuru(st.text_input("生命%", key="zwtxjc_sm", value="0"))
+            zwtxjc["攻击"] = bfb_shuru(st.text_input("攻击%", key="zwtxjc_gj", value="0"))
+            zwtxjc["智力"] = bfb_shuru(st.text_input("智力%", key="zwtxjc_zl", value="0"))
+            zwtxjc["防御"] = bfb_shuru(st.text_input("防御%", key="zwtxjc_fy", value="0"))
+            zwtxjc["魔防"] = bfb_shuru(st.text_input("魔防%", key="zwtxjc_mf", value="0"))
+            zwtxjc["技巧"] = bfb_shuru(st.text_input("技巧%", key="zwtxjc_jq", value="0"))
+
+    with tab11:
+        st.markdown(f"说明:<span style='color:orange;font-size:16px;'> 所有需要人为判断的加成，需要细细盘点不要遗漏 </span>",unsafe_allow_html=True)
+        qtzd_jc_gd["生命"] = st.text_input("战场其他加成生命%", value=0)  # 战斗其他加成生命百分比
+        qtzd_jc["生命"] = bfb_shuru(qtzd_jc_gd["生命"])
+        qtzd_jc_gd["攻击"] = st.text_input("战场其他加成攻击%", value=0)  # 战斗其他加成攻击百分比
+        qtzd_jc["攻击"] = bfb_shuru(qtzd_jc_gd["攻击"])
+        qtzd_jc_gd["智力"] = st.text_input("战场其他加成智力%", value=0)  # 战斗其他加成智力百分比
+        qtzd_jc["智力"] = bfb_shuru(qtzd_jc_gd["智力"])
+        qtzd_jc_gd["防御"] = st.text_input("战场其他加成防御%", value=0)  # 战斗其他加成防御百分比
+        qtzd_jc["防御"] = bfb_shuru(qtzd_jc_gd["防御"])
+        qtzd_jc_gd["魔防"] = st.text_input("战场其他加成魔防%", value=0)  # 战斗其他加成魔防百分比
+        qtzd_jc["魔防"] = bfb_shuru(qtzd_jc_gd["魔防"])
+        qtzd_jc_gd["技巧"] = st.text_input("战场其他加成技巧%", value=0)  # 战斗其他加成技巧百分比
+        qtzd_jc["技巧"] = bfb_shuru(qtzd_jc_gd["技巧"])
 
 with column85:
     if jjc_pd == "是":
-        zd_zjc["生命"] = round(zb_tx["生命"] + cjtx["生命"] + fm4jc["生命"] + qtzd_jc["生命"] + 0.4,3)
+        zd_zjc["生命"] = round(zb_tx["生命"] + cjtx["生命"] + fm4jc["生命"] + zwtxjc["生命"] + qtzd_jc["生命"] + 0.4,3)
     else:
-        zd_zjc["生命"] = zb_tx["生命"] + cjtx["生命"] + fm4jc["生命"] + qtzd_jc["生命"]
-    zd_zjc["攻击"] = zb_tx["攻击"] + cjtx["攻击"] + fm4jc["攻击"] + qtzd_jc["攻击"]
-    zd_zjc["智力"] = zb_tx["智力"] + cjtx["智力"] + fm4jc["智力"] + qtzd_jc["智力"]
-    zd_zjc["防御"] = zb_tx["防御"] + cjtx["防御"] + fm4jc["防御"] + qtzd_jc["防御"]
-    zd_zjc["魔防"] = zb_tx["魔防"] + cjtx["魔防"] + fm4jc["魔防"] + qtzd_jc["魔防"]
-    zd_zjc["技巧"] = zb_tx["技巧"] + cjtx["技巧"] + fm4jc["技巧"] + qtzd_jc["技巧"]
+        zd_zjc["生命"] = zb_tx["生命"] + cjtx["生命"] + fm4jc["生命"] + zwtxjc["生命"] + qtzd_jc["生命"]
+    zd_zjc["攻击"] = zb_tx["攻击"] + cjtx["攻击"] + fm4jc["攻击"] + zwtxjc["攻击"] + qtzd_jc["攻击"]
+    zd_zjc["智力"] = zb_tx["智力"] + cjtx["智力"] + fm4jc["智力"] + zwtxjc["智力"] + qtzd_jc["智力"]
+    zd_zjc["防御"] = zb_tx["防御"] + cjtx["防御"] + fm4jc["防御"] + zwtxjc["防御"] + qtzd_jc["防御"]
+    zd_zjc["魔防"] = zb_tx["魔防"] + cjtx["魔防"] + fm4jc["魔防"] + zwtxjc["魔防"] + qtzd_jc["魔防"]
+    zd_zjc["技巧"] = zb_tx["技巧"] + cjtx["技巧"] + fm4jc["技巧"] + zwtxjc["技巧"] + qtzd_jc["技巧"]
 
     st.write("### 总加成")
     if zd_zjc["生命"] > 0:
@@ -1189,6 +1434,14 @@ with column93:
         st.markdown(f"#### 魔防: <strong><span style='color:red;font-size:25px;'> {yx_zdmb_zz["魔防"]}</span></strong>",unsafe_allow_html=True)
     else:
         st.markdown(f"#### 魔防: <strong><span style='font-size:25px;'> {yx_zdmb_zz["魔防"]}</span></strong>",unsafe_allow_html=True)
+
+# 分割线
+st.divider()
+
+st.write("#### 英雄大心效果")
+st.markdown(f"心之羁绊4:<span style='color:orange;font-size:16px;'> {selected_row['心之羁绊4']} </span>",unsafe_allow_html=True)
+st.markdown(f"心之羁绊7:<span style='color:orange;font-size:16px;'> {selected_row['心之羁绊7']} </span>",unsafe_allow_html=True)
+
 
 # 分割线
 #st.divider()

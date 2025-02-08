@@ -460,12 +460,12 @@ with tab1:
             st.markdown(f"基础加成:<span style='color:green;font-size:16px;'> {zb_dict[yx_ts]['基础加成']}</span>",unsafe_allow_html=True)  # 显示头饰基础加成
             st.markdown(f"满级特效:<span style='color:orange;font-size:16px;'> {zb_dict[yx_ts]['满级特效']}</span>",unsafe_allow_html=True)  # 显示头饰特效
             ts_jc = {
-                "生命": yf_selected_row["生命"],
-                "攻击": yf_selected_row["攻击"],
-                "智力": yf_selected_row["智力"],
-                "防御": yf_selected_row["防御"],
-                "魔防": yf_selected_row["魔防"],
-                "技巧": yf_selected_row["技巧"],
+                "生命": ts_selected_row["生命"],
+                "攻击": ts_selected_row["攻击"],
+                "智力": ts_selected_row["智力"],
+                "防御": ts_selected_row["防御"],
+                "魔防": ts_selected_row["魔防"],
+                "技巧": ts_selected_row["技巧"],
             }
 
         # 分割线
@@ -482,12 +482,12 @@ with tab1:
             st.markdown(f"基础加成:<span style='color:green;font-size:16px;'> {zb_dict[yx_sp]['基础加成']}</span>",unsafe_allow_html=True)  # 显示饰品基础加成
             st.markdown(f"满级特效:<span style='color:orange;font-size:16px;'> {zb_dict[yx_sp]['满级特效']}</span>",unsafe_allow_html=True)  # 显示饰品特效
             sp_jc = {
-                "生命": yf_selected_row["生命"],
-                "攻击": yf_selected_row["攻击"],
-                "智力": yf_selected_row["智力"],
-                "防御": yf_selected_row["防御"],
-                "魔防": yf_selected_row["魔防"],
-                "技巧": yf_selected_row["技巧"],
+                "生命": sp_selected_row["生命"],
+                "攻击": sp_selected_row["攻击"],
+                "智力": sp_selected_row["智力"],
+                "防御": sp_selected_row["防御"],
+                "魔防": sp_selected_row["魔防"],
+                "技巧": sp_selected_row["技巧"],
             }
 
     with column13:
@@ -1125,39 +1125,47 @@ with column84:
     with tab10:
         st.write("")
         if sdsr_pd:
-            st.markdown(f"铸纹特效:<span style='color:orange;font-size:16px;'> {selected_row['铸纹特效']}</span>",unsafe_allow_html=True)
-            zwtxjc = {
-                "生命": selected_row["铸纹特效生命"],
-                "攻击": selected_row["铸纹特效攻击"],
-                "智力": selected_row["铸纹特效智力"],
-                "防御": selected_row["铸纹特效防御"],
-                "魔防": selected_row["铸纹特效魔防"],
-                "技巧": selected_row["铸纹特效技巧"],
-            }
-            if zwtxjc["生命"]>0:
-                st.markdown(f"#### 生命: <span style='color:green;font-size:25px;'> +{round(zwtxjc["生命"]*100)}%</span>",unsafe_allow_html=True)
+            if selected_hero == "自定义英雄":
+                zwtxjc["生命"] = bfb_shuru(st.text_input("生命%", key="zwtxjc_sm", value="0"))
+                zwtxjc["攻击"] = bfb_shuru(st.text_input("攻击%", key="zwtxjc_gj", value="0"))
+                zwtxjc["智力"] = bfb_shuru(st.text_input("智力%", key="zwtxjc_zl", value="0"))
+                zwtxjc["防御"] = bfb_shuru(st.text_input("防御%", key="zwtxjc_fy", value="0"))
+                zwtxjc["魔防"] = bfb_shuru(st.text_input("魔防%", key="zwtxjc_mf", value="0"))
+                zwtxjc["技巧"] = bfb_shuru(st.text_input("技巧%", key="zwtxjc_jq", value="0"))
             else:
-                st.markdown(f"#### 生命: <strong><span style='font-size:25px;'> +{round(zwtxjc["生命"]*100)}%</span></strong>",unsafe_allow_html=True)
-            if zwtxjc["攻击"]>0:
-                st.markdown(f"#### 攻击: <span style='color:green;font-size:25px;'> +{round(zwtxjc["攻击"]*100)}%</span>",unsafe_allow_html=True)
-            else:
-                st.markdown(f"#### 攻击: <strong><span style='font-size:25px;'> +{round(zwtxjc["攻击"]*100)}%</span></strong>",unsafe_allow_html=True)
-            if zwtxjc["智力"]>0:
-                st.markdown(f"#### 智力: <span style='color:green;font-size:25px;'> +{round(zwtxjc["智力"]*100)}%</span>",unsafe_allow_html=True)
-            else:
-                st.markdown(f"#### 智力: <strong><span style='font-size:25px;'> +{round(zwtxjc["智力"]*100)}%</span></strong>",unsafe_allow_html=True)
-            if zwtxjc["防御"]>0:
-                st.markdown(f"#### 防御: <span style='color:green;font-size:25px;'> +{round(zwtxjc["防御"]*100)}%</span>",unsafe_allow_html=True)
-            else:
-                st.markdown(f"#### 防御: <strong><span style='font-size:25px;'> +{round(zwtxjc["防御"]*100)}%</span></strong>",unsafe_allow_html=True)
-            if zwtxjc["魔防"]>0:
-                st.markdown(f"#### 魔防: <span style='color:green;font-size:25px;'> +{round(zwtxjc["魔防"]*100)}%</span>",unsafe_allow_html=True)
-            else:
-                st.markdown(f"#### 魔防: <strong><span style='font-size:25px;'> +{round(zwtxjc["魔防"]*100)}%</span></strong>",unsafe_allow_html=True)
-            if zwtxjc["技巧"]>0:
-                st.markdown(f"#### 技巧: <span style='color:green;font-size:25px;'> +{round(zwtxjc["技巧"]*100)}%</span>",unsafe_allow_html=True)
-            else:
-                st.markdown(f"#### 技巧: <strong><span style='font-size:25px;'> +{round(zwtxjc["技巧"]*100)}%</span></strong>",unsafe_allow_html=True)
+                st.markdown(f"铸纹特效:<span style='color:orange;font-size:16px;'> {selected_row['铸纹特效']}</span>",unsafe_allow_html=True)
+                zwtxjc = {
+                    "生命": selected_row["铸纹特效生命"],
+                    "攻击": selected_row["铸纹特效攻击"],
+                    "智力": selected_row["铸纹特效智力"],
+                    "防御": selected_row["铸纹特效防御"],
+                    "魔防": selected_row["铸纹特效魔防"],
+                    "技巧": selected_row["铸纹特效技巧"],
+                }
+                if zwtxjc["生命"]>0:
+                    st.markdown(f"#### 生命: <span style='color:green;font-size:25px;'> +{round(zwtxjc["生命"]*100)}%</span>",unsafe_allow_html=True)
+                else:
+                    st.markdown(f"#### 生命: <strong><span style='font-size:25px;'> +{round(zwtxjc["生命"]*100)}%</span></strong>",unsafe_allow_html=True)
+                if zwtxjc["攻击"]>0:
+                    st.markdown(f"#### 攻击: <span style='color:green;font-size:25px;'> +{round(zwtxjc["攻击"]*100)}%</span>",unsafe_allow_html=True)
+                else:
+                    st.markdown(f"#### 攻击: <strong><span style='font-size:25px;'> +{round(zwtxjc["攻击"]*100)}%</span></strong>",unsafe_allow_html=True)
+                if zwtxjc["智力"]>0:
+                    st.markdown(f"#### 智力: <span style='color:green;font-size:25px;'> +{round(zwtxjc["智力"]*100)}%</span>",unsafe_allow_html=True)
+                else:
+                    st.markdown(f"#### 智力: <strong><span style='font-size:25px;'> +{round(zwtxjc["智力"]*100)}%</span></strong>",unsafe_allow_html=True)
+                if zwtxjc["防御"]>0:
+                    st.markdown(f"#### 防御: <span style='color:green;font-size:25px;'> +{round(zwtxjc["防御"]*100)}%</span>",unsafe_allow_html=True)
+                else:
+                    st.markdown(f"#### 防御: <strong><span style='font-size:25px;'> +{round(zwtxjc["防御"]*100)}%</span></strong>",unsafe_allow_html=True)
+                if zwtxjc["魔防"]>0:
+                    st.markdown(f"#### 魔防: <span style='color:green;font-size:25px;'> +{round(zwtxjc["魔防"]*100)}%</span>",unsafe_allow_html=True)
+                else:
+                    st.markdown(f"#### 魔防: <strong><span style='font-size:25px;'> +{round(zwtxjc["魔防"]*100)}%</span></strong>",unsafe_allow_html=True)
+                if zwtxjc["技巧"]>0:
+                    st.markdown(f"#### 技巧: <span style='color:green;font-size:25px;'> +{round(zwtxjc["技巧"]*100)}%</span>",unsafe_allow_html=True)
+                else:
+                    st.markdown(f"#### 技巧: <strong><span style='font-size:25px;'> +{round(zwtxjc["技巧"]*100)}%</span></strong>",unsafe_allow_html=True)
         else:
             zwtxjc["生命"] = bfb_shuru(st.text_input("生命%", key="zwtxjc_sm", value="0"))
             zwtxjc["攻击"] = bfb_shuru(st.text_input("攻击%", key="zwtxjc_gj", value="0"))

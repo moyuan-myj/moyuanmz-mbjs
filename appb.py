@@ -50,6 +50,8 @@ st.title('梦幻模拟战-面板模拟计算器')
 
 # 初始化变量
 bz = {"生命":0,"攻击":0,"智力":0,"防御":0,"魔防":0,"技巧":0}  # 初始化白字 字典
+bzzs = {"生命":0,"攻击":0,"智力":0,"防御":0,"魔防":0,"技巧":0}  # 初始化白字整数 字典
+bzxs = {"生命":0,"攻击":0,"智力":0,"防御":0,"魔防":0,"技巧":0}  # 初始化白字带小数 字典
 lz = {"生命":0,"攻击":0,"智力":0,"防御":0,"魔防":0,"技巧":0}  # 初始化绿字 字典
 zw = {"生命":0,"攻击":0,"智力":0,"防御":0,"魔防":0,"技巧":0}  # 初始化铸纹加成 字典
 zyjt = {"生命":0,"攻击":0,"智力":0,"防御":0,"魔防":0,"技巧":0}  # 初始化职业精通 字典
@@ -207,7 +209,15 @@ with column02:
         bz["技巧"] = mb_shuru(st.text_input("技巧-白字", value="0"))  # 技巧白字
     else:
         # 根据选择的英雄和职业，获取属性值
-        bz = {
+        bzxs = {
+            "生命": selected_row["生命带小数"],
+            "攻击": selected_row["攻击带小数"],
+            "智力": selected_row["智力带小数"],
+            "防御": selected_row["防御带小数"],
+            "魔防": selected_row["魔防带小数"],
+            "技巧": selected_row["技巧带小数"],
+        }
+        bzzs = {
             "生命": selected_row["生命"],
             "攻击": selected_row["攻击"],
             "智力": selected_row["智力"],
@@ -215,12 +225,18 @@ with column02:
             "魔防": selected_row["魔防"],
             "技巧": selected_row["技巧"],
         }
-        st.markdown(f"#### 生命: {bz["生命"]}")
-        st.markdown(f"#### 攻击: {bz["攻击"]}")
-        st.markdown(f"#### 智力: {bz["智力"]}")
-        st.markdown(f"#### 防御: {bz["防御"]}")
-        st.markdown(f"#### 魔防: {bz["魔防"]}")
-        st.markdown(f"#### 技巧: {bz["技巧"]}")
+        bz["生命"] = round(bzxs["生命"],2)  # 生命白字
+        bz["攻击"] = round(bzxs["攻击"],2)  # 攻击白字
+        bz["智力"] = round(bzxs["智力"],2)  # 智力白字
+        bz["防御"] = round(bzxs["防御"],2)  # 防御白字
+        bz["魔防"] = round(bzxs["魔防"],2)  # 魔防白字
+        bz["技巧"] = round(bzxs["技巧"],2)  # 技巧白字
+        st.markdown(f"#### 生命: {bzzs["生命"]} <strong><span style='color:grey;font-size:20px;'>({bz["生命"]})",unsafe_allow_html=True)
+        st.markdown(f"#### 攻击: {bzzs["攻击"]} <strong><span style='color:grey;font-size:20px;'>({bz["攻击"]})",unsafe_allow_html=True)
+        st.markdown(f"#### 智力: {bzzs["智力"]} <strong><span style='color:grey;font-size:20px;'>({bz["智力"]})",unsafe_allow_html=True)
+        st.markdown(f"#### 防御: {bzzs["防御"]} <strong><span style='color:grey;font-size:20px;'>({bz["防御"]})",unsafe_allow_html=True)
+        st.markdown(f"#### 魔防: {bzzs["魔防"]} <strong><span style='color:grey;font-size:20px;'>({bz["魔防"]})",unsafe_allow_html=True)
+        st.markdown(f"#### 技巧: {bzzs["技巧"]} <strong><span style='color:grey;font-size:20px;'>({bz["技巧"]})",unsafe_allow_html=True)
 
 # 分割线
 st.divider()
@@ -851,12 +867,12 @@ with column74:
     st.write("### 英雄的白+绿面板")
     if sdsr_pd:
         #计算英雄的白+绿
-        bjl["生命"] = bz["生命"] + lz["生命"]
-        bjl["攻击"] = bz["攻击"] + lz["攻击"]
-        bjl["智力"] = bz["智力"] + lz["智力"]
-        bjl["防御"] = bz["防御"] + lz["防御"]
-        bjl["魔防"] = bz["魔防"] + lz["魔防"]
-        bjl["技巧"] = bz["技巧"] + lz["技巧"]
+        bjl["生命"] = round(bz["生命"] + lz["生命"],2)
+        bjl["攻击"] = round(bz["攻击"] + lz["攻击"],2)
+        bjl["智力"] = round(bz["智力"] + lz["智力"],2)
+        bjl["防御"] = round(bz["防御"] + lz["防御"],2)
+        bjl["魔防"] = round(bz["魔防"] + lz["魔防"],2)
+        bjl["技巧"] = round(bz["技巧"] + lz["技巧"],2)
 
         st.markdown(f"#### 生命: <strong><span style='font-size:25px;'> {bjl["生命"]}</span></strong>",unsafe_allow_html=True)
         st.markdown(f"#### 攻击: <strong><span style='font-size:25px;'> {bjl["攻击"]}</span></strong>",unsafe_allow_html=True)

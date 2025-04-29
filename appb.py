@@ -112,6 +112,11 @@ yx_fy_dtxs = {"生命":0,"攻击":0,"智力":0,"防御":0,"魔防":0,"技巧":0}
 yx_mf_dtxs = {"生命":0,"攻击":0,"智力":0,"防御":0,"魔防":0,"技巧":0}  # 初始化英雄魔防代替系数 字典
 yx_jq_dtxs = {"生命":0,"攻击":0,"智力":0,"防御":0,"魔防":0,"技巧":0}  # 初始化英雄技巧代替系数 字典
 
+sb_cs = {"生命":0,"攻击":0,"防御":0,"魔防":0}  # 初始化士兵初始值 字典
+sb_sq_jc = {"士兵生命":0,"士兵攻击":0,"士兵防御":0,"士兵魔防":0} # 初始化士兵神契加成 字典
+yx_bx_jc = {"兵修生命":0,"兵修攻击":0,"兵修防御":0,"兵修魔防":0} # 初始英雄兵修加成 字典
+sb_bz = {"生命":0,"攻击":0,"防御":0,"魔防":0} # 初始士兵白字 字典
+
 # 初始化附魔选取的列表
 wq_sm_bfb_percentages10 = ["10%","9%","8%","7%","6%","5%","4%","3%","2%","1%","0%"]
 wq_gj_bfb_percentages15 = ["15%","14%","13%","12%","11%","10%","9%","8%","7%","6%","5%","4%","3%","2%","1%","0%"]
@@ -1466,16 +1471,143 @@ st.write("#### 英雄大心效果")
 st.markdown(f"心之羁绊4:<span style='color:orange;font-size:16px;'> {selected_row['心之羁绊4']} </span>",unsafe_allow_html=True)
 st.markdown(f"心之羁绊7:<span style='color:orange;font-size:16px;'> {selected_row['心之羁绊7']} </span>",unsafe_allow_html=True)
 
+# 分割线
+st.divider()
+
+st.write("### 士兵初始值区")
+
+# 加载数据
+csv_file_path_sb = './data/梦战士兵数据.csv'  # 为实际文件路径
+df3 = load_data(csv_file_path_sb)
+
+column1001, column1002, column1003= st.columns([1, 0.1, 1])
+
+with column1001:
+
+    # 士兵兵种选择
+    sb_bzzy = df3['兵种'].unique()
+    selected_sb_bzzy = st.selectbox("请选择士兵兵种", sb_bzzy)
+
+    # 根据选中兵种，获取士兵列表
+    sb_names = df3[df3['兵种'] == selected_sb_bzzy]['士兵名'].tolist()
+
+with column1003:
+
+    # 士兵选择框
+    if sb_names:
+        selected_sb_names = st.selectbox("请选择士兵",sb_names)
+
+    # 选取选择结果的那一行数据
+    sb_selected_row = df3[(df3['兵种'] == selected_sb_bzzy) & (df3['士兵名'] == selected_sb_names)].iloc[0]
+
+column1101, column1102, column1103= st.columns([1, 0.1, 1])
+
+with column1101:
+
+    # 显示士兵头像
+    sb_image_url = sb_selected_row['图片地址']  # 获取头像链接列的值
+    # 调整头像大小
+    st.image(sb_image_url, caption=selected_sb_names, width=150)  # 设置宽度为150像素
+
+with column1103:
+
+    # 读取士兵基础值
+    sb_cs = {
+        "生命": sb_selected_row["生命"],
+        "攻击": sb_selected_row["攻击"],
+        "防御": sb_selected_row["防御"],
+        "魔防": sb_selected_row["魔防"]
+    }
+
+    st.markdown(f"#### 生命: {sb_cs["生命"]}")
+    st.markdown(f"#### 攻击: {sb_cs["攻击"]}")
+    st.markdown(f"#### 防御: {sb_cs["防御"]}")
+    st.markdown(f"#### 魔防: {sb_cs["魔防"]}")
+st.markdown(f"士兵等级:<span style='color:orange;font-size:16px;'> {sb_selected_row["等级"]}</span>",unsafe_allow_html=True)  # 显示士兵等级
+st.markdown(f"满级士兵技能:<span style='color:orange;font-size:16px;'> {sb_selected_row["满级技能"]}</span>",unsafe_allow_html=True)  # 显示士兵特效
 
 # 分割线
-#st.divider()
+st.divider()
 
-#st.write("### 英雄兵修区（未开发）")
-#sm_bx = st.number_input("生命-兵修", 0)  # 生命兵修
-#gj_bx = st.number_input("攻击-兵修", 0)  # 攻击兵修
-#fy_bx = st.number_input("防御-兵修", 0)  # 防御兵修
-#mf_bx = st.number_input("魔防-兵修", 0)  # 魔防兵修
+st.write("### 士兵神契加成区")
+st.markdown(f"<span style='color:red;font-size:15px;'>请提前在「神契设置区」设置好神契</span>",unsafe_allow_html=True)
+sbsq_sdsr_pd = st.checkbox("默认关联读取此前神契设置区的加成 (想手动输入神契加成 就取消勾选)", value=True)
 
+if sbsq_sdsr_pd:
+    sb_sq_jc = {
+        "士兵生命": sq_total["士兵生命"],
+        "士兵攻击": sq_total["士兵攻击"],
+        "士兵防御": sq_total["士兵防御"],
+        "士兵魔防": sq_total["士兵魔防"]
+    }
+    column1201, column1202 = st.columns([1,1])
+    with column1201:
+        st.markdown(f"#### 士兵生命: <strong><span style='color:green;font-size:25px;'> + {sb_sq_jc["士兵生命"]*100}% </span></strong>",unsafe_allow_html=True)
+        st.markdown(f"#### 士兵攻击: <strong><span style='color:green;font-size:25px;'> + {sb_sq_jc["士兵攻击"]*100}% </span></strong>",unsafe_allow_html=True)
+    with column1202:
+        st.markdown(f"#### 士兵防御: <strong><span style='color:green;font-size:25px;'> + {sb_sq_jc["士兵防御"]*100}% </span></strong>",unsafe_allow_html=True)
+        st.markdown(f"#### 士兵魔防: <strong><span style='color:green;font-size:25px;'> + {sb_sq_jc["士兵魔防"]*100}% </span></strong>",unsafe_allow_html=True)
+else:
+    column1203, column1204 = st.columns([1, 1])
+    with column1203:
+        sb_sq_jc["士兵生命"] = bfb_shuru(st.text_input("士兵生命%（最大值24%）", key="sb_sq_jc_sm", value="0"))
+        sb_sq_jc["士兵攻击"] = bfb_shuru(st.text_input("士兵攻击%（最大值24%）", key="sb_sq_jc_gj", value="0"))
+    with column1204:
+        sb_sq_jc["士兵防御"] = bfb_shuru(st.text_input("士兵防御%（最大值24%）", key="sb_sq_jc_fy", value="0"))
+        sb_sq_jc["士兵魔防"] = bfb_shuru(st.text_input("士兵魔防%（最大值24%）", key="sb_sq_jc_mf", value="0"))
 
+# 分割线
+st.divider()
 
+st.write("### 英雄兵修区")
 
+yxbx_sdsr_pd = st.checkbox("默认关联读取以上英雄模拟结果 (想手动输入 就取消勾选)", value=True)
+
+if yxbx_sdsr_pd:
+    if selected_hero == "自定义英雄":
+        yx_bx_jc["兵修生命"] = bfb_shuru(st.text_input("兵修生命%", key="yx_bx_jc_sm", value="0"))
+        yx_bx_jc["兵修攻击"] = bfb_shuru(st.text_input("兵修攻击%", key="yx_bx_jc_gj", value="0"))
+        yx_bx_jc["兵修防御"] = bfb_shuru(st.text_input("兵修防御%", key="yx_bx_jc_fy", value="0"))
+        yx_bx_jc["兵修魔防"] = bfb_shuru(st.text_input("兵修魔防%", key="yx_bx_jc_mf", value="0"))
+    else:
+        yx_bx_jc = {
+    "兵修生命": selected_row["兵修生命"],
+    "兵修攻击": selected_row["兵修攻击"],
+    "兵修防御": selected_row["兵修防御"],
+    "兵修魔防": selected_row["兵修魔防"],
+                }
+        column1205, column1206 = st.columns([0.5,1.5])
+        with column1205:
+            st.image(hero_image_url, width=90)  # 设置宽度为90像素
+        with column1206:
+            st.markdown(f"#### 兵修生命: <strong><span style='color:green;font-size:25px;'> + {round(yx_bx_jc["兵修生命"]*100)}% </span></strong>",unsafe_allow_html=True)
+            st.markdown(f"#### 兵修攻击: <strong><span style='color:green;font-size:25px;'> + {round(yx_bx_jc["兵修攻击"]*100)}% </span></strong>",unsafe_allow_html=True)
+            st.markdown(f"#### 兵修防御: <strong><span style='color:green;font-size:25px;'> + {round(yx_bx_jc["兵修防御"]*100)}% </span></strong>",unsafe_allow_html=True)
+            st.markdown(f"#### 兵修魔防: <strong><span style='color:green;font-size:25px;'> + {round(yx_bx_jc["兵修魔防"]*100)}% </span></strong>",unsafe_allow_html=True)
+else:
+    yx_bx_jc["兵修生命"] = bfb_shuru(st.text_input("兵修生命%", key="yx_bx_jc_sm", value="0"))
+    yx_bx_jc["兵修攻击"] = bfb_shuru(st.text_input("兵修攻击%", key="yx_bx_jc_gj", value="0"))
+    yx_bx_jc["兵修防御"] = bfb_shuru(st.text_input("兵修防御%", key="yx_bx_jc_fy", value="0"))
+    yx_bx_jc["兵修魔防"] = bfb_shuru(st.text_input("兵修魔防%", key="yx_bx_jc_mf", value="0"))
+
+# 分割线
+st.divider()
+
+st.write("### 士兵白字区")
+
+sb_bz["生命"] = sb_cs["生命"] * ((60-1)*0.1+(70-60)*0.05+1)*(1+0.8+sb_sq_jc["士兵生命"]+sb_selected_row["全属性百分比加成"]) + 55
+sb_bz["攻击"] = sb_cs["攻击"] * ((60-1)*0.1+(70-60)*0.05+1)*(1+0.8+sb_sq_jc["士兵攻击"]+sb_selected_row["全属性百分比加成"]) + 55
+sb_bz["防御"] = sb_cs["防御"] * ((60-1)*0.1+(70-60)*0.05+1)*(1+0.8+sb_sq_jc["士兵防御"]+sb_selected_row["全属性百分比加成"]) + 33
+sb_bz["魔防"] = sb_cs["魔防"] * ((60-1)*0.1+(70-60)*0.05+1)*(1+0.8+sb_sq_jc["士兵魔防"]+sb_selected_row["全属性百分比加成"]) + 33
+
+column1301, column1302, column1303 = st.columns([0.2,0.3,1])
+
+with column1301:
+    st.image(hero_image_url, width=80) #设置宽度为80像素
+with column1302:
+    st.image(sb_image_url,width=130) #设置宽度为130像素
+with column1303:
+    st.markdown(f"### 生命:   {round(sb_bz["生命"],1)} <strong><span style='color:green;font-size:26px;'> + {round(sb_bz["生命"]*yx_bx_jc["兵修生命"],1)}（{round(yx_bx_jc["兵修生命"]*100)}%）</span></strong>",unsafe_allow_html=True)
+    st.markdown(f"### 攻击:   {round(sb_bz["攻击"],1)} <strong><span style='color:green;font-size:26px;'> + {round(sb_bz["攻击"]*yx_bx_jc["兵修攻击"],1)}（{round(yx_bx_jc["兵修攻击"]*100)}%）</span></strong>",unsafe_allow_html=True)
+    st.markdown(f"### 防御:   {round(sb_bz["防御"],1)} <strong><span style='color:green;font-size:26px;'> + {round(sb_bz["防御"]*yx_bx_jc["兵修防御"],1)}（{round(yx_bx_jc["兵修防御"]*100)}%）</span></strong>",unsafe_allow_html=True)
+    st.markdown(f"### 魔防:   {round(sb_bz["魔防"],1)} <strong><span style='color:green;font-size:26px;'> + {round(sb_bz["魔防"]*yx_bx_jc["兵修魔防"],1)}（{round(yx_bx_jc["兵修魔防"]*100)}%）</span></strong>",unsafe_allow_html=True)

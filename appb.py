@@ -1691,9 +1691,9 @@ with column1503:
         sb_zd_zjc["生命"] = round(sb_bztx_qtjc["生命"] + 0.4,3)
     else:
         sb_zd_zjc["生命"] = sb_bztx_qtjc["生命"]
-    sb_zd_zjc["攻击"] = sb_cjtx["攻击"] + sb_kj_jc["攻击"] + sb_zd_zjc["攻击"]
-    sb_zd_zjc["防御"] = sb_cjtx["防御"] + sb_kj_jc["防御"] + sb_zd_zjc["防御"]
-    sb_zd_zjc["魔防"] = sb_cjtx["魔防"] + sb_kj_jc["魔防"] + sb_zd_zjc["魔防"]
+    sb_zd_zjc["攻击"] = sb_cjtx["攻击"] + sb_kj_jc["攻击"] + sb_bztx_qtjc["攻击"]
+    sb_zd_zjc["防御"] = sb_cjtx["防御"] + sb_kj_jc["防御"] + sb_bztx_qtjc["防御"]
+    sb_zd_zjc["魔防"] = sb_cjtx["魔防"] + sb_kj_jc["魔防"] + sb_bztx_qtjc["魔防"]
     sb_zd_zjc["生命克制修正"] = sb_bztx_qtjc["生命克制修正"]
     sb_zd_zjc["攻击克制修正"] = sb_kj_jc["攻击克制修正"] + sb_bztx_qtjc["攻击克制修正"]
     sb_zd_zjc["智力克制修正"] = sb_kj_jc["智力克制修正"] + sb_bztx_qtjc["智力克制修正"]
@@ -1774,12 +1774,11 @@ sb_zdmb["生命"] = sb_bz["生命"] * (1 + sb_zd_zjc["生命"])
 sb_zdmb["攻击"] = sb_bz["攻击"] * (1 + sb_zd_zjc["攻击"])
 sb_zdmb["防御"] = sb_bz["防御"] * (1 + sb_zd_zjc["防御"])
 sb_zdmb["魔防"] = sb_bz["魔防"] * (1 + sb_zd_zjc["魔防"])
-sb_zdmb_klkz["生命"] = sb_zdmb["生命"] * (1 + sb_zd_zjc["生命克制修正"])
-sb_zdmb_klkz["物理攻击"] = sb_zdmb["攻击"] * (1 + sb_zd_zjc["攻击克制修正"])
-sb_zdmb_klkz["魔法攻击"] = sb_zdmb["攻击"] * (1 + sb_zd_zjc["智力克制修正"])
-sb_zdmb_klkz["防御攻击"] = sb_zdmb["防御"] * (1 + sb_zd_zjc["防御克制修正"])
-sb_zdmb_klkz["魔防攻击"] = sb_zdmb["魔防"] * (1 + sb_zd_zjc["魔防克制修正"])
-
+sb_zdmb_klkz["生命"] = sb_zdmb["生命"] * (1+yx_bx_jc["兵修生命"]) * (1 + sb_zd_zjc["生命克制修正"])
+sb_zdmb_klkz["物理攻击"] = sb_zdmb["攻击"] * (1+yx_bx_jc["兵修攻击"]) * (1 + sb_zd_zjc["攻击克制修正"])
+sb_zdmb_klkz["魔法攻击"] = sb_zdmb["攻击"] * (1+yx_bx_jc["兵修攻击"]) * (1 + sb_zd_zjc["智力克制修正"])
+sb_zdmb_klkz["防御"] = sb_zdmb["防御"] * (1+yx_bx_jc["兵修防御"]) * (1 + sb_zd_zjc["防御克制修正"])
+sb_zdmb_klkz["魔防"] = sb_zdmb["魔防"] * (1+yx_bx_jc["兵修魔防"]) * (1 + sb_zd_zjc["魔防克制修正"])
 
 column1701, column1702, column1703 = st.columns([0.2,0.3,1])
 

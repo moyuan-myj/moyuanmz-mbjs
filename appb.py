@@ -116,6 +116,12 @@ sb_cs = {"生命":0,"攻击":0,"防御":0,"魔防":0}  # 初始化士兵初始�
 sb_sq_jc = {"士兵生命":0,"士兵攻击":0,"士兵防御":0,"士兵魔防":0} # 初始化士兵神契加成 字典
 yx_bx_jc = {"兵修生命":0,"兵修攻击":0,"兵修防御":0,"兵修魔防":0} # 初始英雄兵修加成 字典
 sb_bz = {"生命":0,"攻击":0,"防御":0,"魔防":0} # 初始士兵白字 字典
+sb_cjtx = {"生命":0,"攻击":0,"防御":0,"魔防":0}  # 初始化士兵超绝特效加成 字典
+sb_kj_jc = {"生命":0,"攻击":0,"防御":0,"魔防":0,"生命克制修正":0,"攻击克制修正":0,"智力克制修正":0,"防御克制修正":0,"魔防克制修正":0}  # 初始化士兵科技加成 字典
+sb_bztx_qtjc = {"生命":0,"攻击":0,"防御":0,"魔防":0,"生命克制修正":0,"攻击克制修正":0,"智力克制修正":0,"防御克制修正":0,"魔防克制修正":0}  # 初始化士兵兵种特效及其他加成 字典
+sb_zd_zjc = {"生命":0,"攻击":0,"防御":0,"魔防":0,"生命克制修正":0,"攻击克制修正":0,"智力克制修正":0,"防御克制修正":0,"魔防克制修正":0}  # 初始化士兵战斗总加成 字典
+sb_zdmb = {"生命":0,"攻击":0,"防御":0,"魔防":0}  # 初始化士兵战斗面板 字典
+sb_zdmb_klkz = {"生命":0,"物理攻击":0,"魔法攻击":0,"防御":0,"魔防":0}  # 初始化士兵战斗面板（考虑克制加成） 字典
 
 # 初始化附魔选取的列表
 wq_sm_bfb_percentages10 = ["10%","9%","8%","7%","6%","5%","4%","3%","2%","1%","0%"]
@@ -411,8 +417,8 @@ with tab1:
     column11, column12, column13 = st.columns([1, 0.1, 0.5])
     with column11:
         # 读取 装备基础属性CSV 文件
-        file_path = "./data/梦战装备满级数据.csv"  # 读取CSV文件路径
-        df2 = load_data(file_path)
+        file_path_zb = "./data/梦战装备满级数据.csv"  # 读取CSV文件路径
+        df2 = load_data(file_path_zb)
 
         # 将数据转换为字典，按“名称”索引
         zb_dict = df2.set_index("装备名称").T.to_dict()
@@ -1578,7 +1584,7 @@ if yxbx_sdsr_pd:
                 }
         column1205, column1206 = st.columns([0.5,1.5])
         with column1205:
-            st.image(hero_image_url, width=90)  # 设置宽度为90像素
+            st.image(hero_image_url, caption=selected_hero, width=90)  # 设置宽度为90像素
         with column1206:
             st.markdown(f"#### 兵修生命: <strong><span style='color:green;font-size:25px;'> + {round(yx_bx_jc["兵修生命"]*100)}% </span></strong>",unsafe_allow_html=True)
             st.markdown(f"#### 兵修攻击: <strong><span style='color:green;font-size:25px;'> + {round(yx_bx_jc["兵修攻击"]*100)}% </span></strong>",unsafe_allow_html=True)
@@ -1603,11 +1609,214 @@ sb_bz["魔防"] = sb_cs["魔防"] * ((60-1)*0.1+(70-60)*0.05+1)*(1+0.8+sb_sq_jc[
 column1301, column1302, column1303 = st.columns([0.2,0.3,1])
 
 with column1301:
-    st.image(hero_image_url, width=80) #设置宽度为80像素
+    st.image(hero_image_url,caption=selected_hero,width=80) #设置宽度为80像素
 with column1302:
-    st.image(sb_image_url,width=130) #设置宽度为130像素
+    st.image(sb_image_url,caption=selected_sb_names,width=130) #设置宽度为130像素
 with column1303:
-    st.markdown(f"### 生命:   {round(sb_bz["生命"],1)} <strong><span style='color:green;font-size:26px;'> + {round(sb_bz["生命"]*yx_bx_jc["兵修生命"],1)}（{round(yx_bx_jc["兵修生命"]*100)}%）</span></strong>",unsafe_allow_html=True)
-    st.markdown(f"### 攻击:   {round(sb_bz["攻击"],1)} <strong><span style='color:green;font-size:26px;'> + {round(sb_bz["攻击"]*yx_bx_jc["兵修攻击"],1)}（{round(yx_bx_jc["兵修攻击"]*100)}%）</span></strong>",unsafe_allow_html=True)
-    st.markdown(f"### 防御:   {round(sb_bz["防御"],1)} <strong><span style='color:green;font-size:26px;'> + {round(sb_bz["防御"]*yx_bx_jc["兵修防御"],1)}（{round(yx_bx_jc["兵修防御"]*100)}%）</span></strong>",unsafe_allow_html=True)
-    st.markdown(f"### 魔防:   {round(sb_bz["魔防"],1)} <strong><span style='color:green;font-size:26px;'> + {round(sb_bz["魔防"]*yx_bx_jc["兵修魔防"],1)}（{round(yx_bx_jc["兵修魔防"]*100)}%）</span></strong>",unsafe_allow_html=True)
+    st.markdown(f"### 生命:   {round(sb_bz["生命"],2)} <strong><span style='color:green;font-size:26px;'> + {round(sb_bz["生命"]*yx_bx_jc["兵修生命"],2)}（{round(yx_bx_jc["兵修生命"]*100)}%）</span></strong>",unsafe_allow_html=True)
+    st.markdown(f"### 攻击:   {round(sb_bz["攻击"],2)} <strong><span style='color:green;font-size:26px;'> + {round(sb_bz["攻击"]*yx_bx_jc["兵修攻击"],2)}（{round(yx_bx_jc["兵修攻击"]*100)}%）</span></strong>",unsafe_allow_html=True)
+    st.markdown(f"### 防御:   {round(sb_bz["防御"],2)} <strong><span style='color:green;font-size:26px;'> + {round(sb_bz["防御"]*yx_bx_jc["兵修防御"],2)}（{round(yx_bx_jc["兵修防御"]*100)}%）</span></strong>",unsafe_allow_html=True)
+    st.markdown(f"### 魔防:   {round(sb_bz["魔防"],2)} <strong><span style='color:green;font-size:26px;'> + {round(sb_bz["魔防"]*yx_bx_jc["兵修魔防"],2)}（{round(yx_bx_jc["兵修魔防"]*100)}%）</span></strong>",unsafe_allow_html=True)
+
+# 分割线
+st.divider()
+
+column1501, column1502, column1503 = st.columns([1,0.1,1])
+
+with column1501:
+    options_sbjjc_pd = ["是", "否"]
+    sbjjc_pd = st.radio("是否竞技场", options_sbjjc_pd, key="sbjjc_pd")
+
+    options_sbcj_pd = ["未开", "开"]
+    sbcj_pd = st.radio("是否开启超绝特效", options_sbcj_pd, key="sbcj_pd")
+
+    if sbcj_pd == "未开":
+        sb_cjtx["攻击"] = 0
+        sb_cjtx["防御"] = 0
+        sb_cjtx["魔防"] = 0
+    else:
+        sb_cjtx["攻击"] = 0.2
+        sb_cjtx["防御"] = 0.2
+        sb_cjtx["魔防"] = 0.3
+
+    # 分割线
+    st.divider()
+
+    file_path_sbkj =  './data/梦战士兵科技数据.csv'
+    df4 = load_data(file_path_sbkj)
+
+    # 根据选择的兵种筛选出对应的科技
+    unit_techs = df4[df4['兵种'] == selected_sb_bzzy]
+
+    # 显示科技选择界面
+    st.subheader(f"{selected_sb_bzzy}可用科技")
+
+    # 显示用户可选择的科技
+    for _, tech in unit_techs.iterrows():
+        checkbox_key = f"{selected_sb_bzzy}_{tech['科技名称']}"
+        selected = st.checkbox(tech['科技名称'], key=checkbox_key)
+
+        # 用 HTML 显示科技效果（橙色）
+        st.markdown(f"<span style='color:orange;'>{tech['科技效果']}</span>", unsafe_allow_html=True)
+
+        if selected:
+            for bonus_type in sb_kj_jc.keys():
+                if bonus_type in tech and not pd.isna(tech[bonus_type]):
+                    sb_kj_jc[bonus_type] += tech[bonus_type]
+
+with column1503:
+
+    st.write("### 战场其他加成")
+    st.markdown(f"说明:<span style='color:red;font-size:16px;'> 所有需要人为判断的加成，需要细细盘点不要遗漏。士兵技能请人为考虑 </span>",unsafe_allow_html=True)
+    st.image(sb_image_url,width=70) #设置宽度为70像素
+    st.markdown(f"满级士兵技能:<span style='color:orange;font-size:16px;'> {sb_selected_row["满级技能"]}</span>",unsafe_allow_html=True)  # 显示士兵特效
+
+    tab12,tab13 = st.tabs(["面板加成","克制加成"])
+
+    # 士兵兵种特效及战斗其他加成
+
+    with tab12:
+        sb_bztx_qtjc["生命"] = bfb_shuru(st.text_input("士兵战场加成生命%", value=0))
+        sb_bztx_qtjc["攻击"] = bfb_shuru(st.text_input("士兵战场加成攻击%", value=0))
+        sb_bztx_qtjc["防御"] = bfb_shuru(st.text_input("士兵战场加成防御%", value=0))
+        sb_bztx_qtjc["魔防"] = bfb_shuru(st.text_input("士兵战场加成魔防%", value=0))
+    with tab13:
+        sb_bztx_qtjc["生命克制修正"] = bfb_shuru(st.text_input("士兵战场加成生命克制修正%", value=0))
+        sb_bztx_qtjc["攻击克制修正"] = bfb_shuru(st.text_input("士兵战场加成攻击克制修正%", value=0))
+        sb_bztx_qtjc["智力克制修正"] = bfb_shuru(st.text_input("士兵战场加成智力克制修正%", value=0))
+        sb_bztx_qtjc["防御克制修正"] = bfb_shuru(st.text_input("士兵战场加成防御克制修正%", value=0))
+        sb_bztx_qtjc["魔防克制修正"] = bfb_shuru(st.text_input("士兵战场加成魔防克制修正%", value=0))
+
+    if sbjjc_pd == "是":
+        sb_zd_zjc["生命"] = round(sb_bztx_qtjc["生命"] + 0.4,3)
+    else:
+        sb_zd_zjc["生命"] = sb_bztx_qtjc["生命"]
+    sb_zd_zjc["攻击"] = sb_cjtx["攻击"] + sb_kj_jc["攻击"] + sb_zd_zjc["攻击"]
+    sb_zd_zjc["防御"] = sb_cjtx["防御"] + sb_kj_jc["防御"] + sb_zd_zjc["防御"]
+    sb_zd_zjc["魔防"] = sb_cjtx["魔防"] + sb_kj_jc["魔防"] + sb_zd_zjc["魔防"]
+    sb_zd_zjc["生命克制修正"] = sb_bztx_qtjc["生命克制修正"]
+    sb_zd_zjc["攻击克制修正"] = sb_kj_jc["攻击克制修正"] + sb_bztx_qtjc["攻击克制修正"]
+    sb_zd_zjc["智力克制修正"] = sb_kj_jc["智力克制修正"] + sb_bztx_qtjc["智力克制修正"]
+    sb_zd_zjc["防御克制修正"] = sb_kj_jc["防御克制修正"] + sb_bztx_qtjc["防御克制修正"]
+    sb_zd_zjc["魔防克制修正"] = sb_kj_jc["魔防克制修正"] + sb_bztx_qtjc["魔防克制修正"]
+
+# 分割线
+st.divider()
+
+st.write("### 士兵战场总加成")
+
+column1601, column1602 = st.columns([0.7,1])
+
+with column1601:
+    if sb_zd_zjc["生命"] > 0:
+        st.markdown(f"#### 生命: <strong><span style='color:green;font-size:25px;'> +{round(sb_zd_zjc["生命"]*100,1)}%</span></strong>",unsafe_allow_html=True)
+    elif sb_zd_zjc["生命"] < 0:
+        st.markdown(f"#### 生命: <strong><span style='color:red;font-size:25px;'> {round(sb_zd_zjc["生命"]*100,1)}%</span></strong>",unsafe_allow_html=True)
+    else:
+        st.markdown(f"#### 生命: <strong><span style='font-size:25px;'> +{round(sb_zd_zjc["生命"]*100,1)}%</span></strong>",unsafe_allow_html=True)
+    if sb_zd_zjc["攻击"] > 0:
+        st.markdown(f"#### 攻击: <strong><span style='color:green;font-size:25px;'> +{round(sb_zd_zjc["攻击"]*100,1)}%</span></strong>",unsafe_allow_html=True)
+    elif sb_zd_zjc["攻击"] < 0:
+        st.markdown(f"#### 攻击: <strong><span style='color:red;font-size:25px;'> {round(sb_zd_zjc["攻击"]*100,1)}%</span></strong>",unsafe_allow_html=True)
+    else:
+        st.markdown(f"#### 攻击: <strong><span style='font-size:25px;'> +{round(sb_zd_zjc["攻击"]*100,1)}%</span></strong>",unsafe_allow_html=True)
+    if sb_zd_zjc["防御"] > 0:
+        st.markdown(f"#### 防御: <strong><span style='color:green;font-size:25px;'> +{round(sb_zd_zjc["防御"]*100,1)}%</span></strong>",unsafe_allow_html=True)
+    elif sb_zd_zjc["防御"] < 0:
+        st.markdown(f"#### 防御: <strong><span style='color:red;font-size:25px;'> {round(sb_zd_zjc["防御"]*100,1)}%</span></strong>",unsafe_allow_html=True)
+    else:
+        st.markdown(f"#### 防御: <strong><span style='font-size:25px;'> +{round(sb_zd_zjc["防御"]*100,1)}%</span></strong>",unsafe_allow_html=True)
+    if sb_zd_zjc["魔防"] > 0:
+        st.markdown(f"#### 魔防: <strong><span style='color:green;font-size:25px;'> +{round(sb_zd_zjc["魔防"]*100,1)}%</span></strong>",unsafe_allow_html=True)
+    elif sb_zd_zjc["魔防"] < 0:
+        st.markdown(f"#### 魔防: <strong><span style='color:red;font-size:25px;'> {round(sb_zd_zjc["魔防"]*100,1)}%</span></strong>",unsafe_allow_html=True)
+    else:
+        st.markdown(f"#### 魔防: <strong><span style='font-size:25px;'> +{round(sb_zd_zjc["魔防"]*100,1)}%</span></strong>",unsafe_allow_html=True)
+
+with column1602:
+    if sb_zd_zjc["生命克制修正"] > 0:
+        st.markdown(f"#### 生命克制修正: <strong><span style='color:green;font-size:25px;'> +{round(sb_zd_zjc["生命克制修正"]*100,1)}%</span></strong>",unsafe_allow_html=True)
+    elif sb_zd_zjc["生命克制修正"] < 0:
+        st.markdown(f"#### 生命克制修正: <strong><span style='color:red;font-size:25px;'> {round(sb_zd_zjc["生命克制修正"]*100,1)}%</span></strong>",unsafe_allow_html=True)
+    else:
+        st.markdown(f"#### 生命克制修正: <strong><span style='font-size:25px;'> +{round(sb_zd_zjc["生命克制修正"]*100,1)}%</span></strong>",unsafe_allow_html=True)
+    if sb_zd_zjc["攻击克制修正"] > 0:
+        st.markdown(f"#### 攻击克制修正: <strong><span style='color:green;font-size:25px;'> +{round(sb_zd_zjc["攻击克制修正"]*100,1)}%</span></strong>",unsafe_allow_html=True)
+    elif sb_zd_zjc["攻击克制修正"] < 0:
+        st.markdown(f"#### 攻击克制修正: <strong><span style='color:red;font-size:25px;'> {round(sb_zd_zjc["攻击克制修正"]*100,1)}%</span></strong>",unsafe_allow_html=True)
+    else:
+        st.markdown(f"#### 攻击克制修正: <strong><span style='font-size:25px;'> +{round(sb_zd_zjc["攻击克制修正"]*100,1)}%</span></strong>",unsafe_allow_html=True)
+    if sb_zd_zjc["智力克制修正"] > 0:
+        st.markdown(f"#### 智力克制修正: <strong><span style='color:green;font-size:25px;'> +{round(sb_zd_zjc["智力克制修正"]*100,1)}%</span></strong>",unsafe_allow_html=True)
+    elif sb_zd_zjc["智力克制修正"] < 0:
+        st.markdown(f"#### 智力克制修正: <strong><span style='color:red;font-size:25px;'> {round(sb_zd_zjc["智力克制修正"]*100,1)}%</span></strong>",unsafe_allow_html=True)
+    else:
+        st.markdown(f"#### 智力克制修正: <strong><span style='font-size:25px;'> +{round(sb_zd_zjc["智力克制修正"]*100,1)}%</span></strong>",unsafe_allow_html=True)
+    if sb_zd_zjc["防御克制修正"] > 0:
+        st.markdown(f"#### 防御克制修正: <strong><span style='color:green;font-size:25px;'> +{round(sb_zd_zjc["防御克制修正"]*100,1)}%</span></strong>",unsafe_allow_html=True)
+    elif sb_zd_zjc["防御克制修正"] < 0:
+        st.markdown(f"#### 防御克制修正: <strong><span style='color:red;font-size:25px;'> {round(sb_zd_zjc["防御克制修正"]*100,1)}%</span></strong>",unsafe_allow_html=True)
+    else:
+        st.markdown(f"#### 防御克制修正: <strong><span style='font-size:25px;'> +{round(sb_zd_zjc["防御克制修正"]*100,1)}%</span></strong>",unsafe_allow_html=True)
+    if sb_zd_zjc["魔防克制修正"] > 0:
+        st.markdown(f"#### 魔防克制修正: <strong><span style='color:green;font-size:25px;'> +{round(sb_zd_zjc["魔防克制修正"]*100,1)}%</span></strong>",unsafe_allow_html=True)
+    elif sb_zd_zjc["魔防克制修正"] < 0:
+        st.markdown(f"#### 魔防克制修正: <strong><span style='color:red;font-size:25px;'> {round(sb_zd_zjc["魔防克制修正"]*100,1)}%</span></strong>",unsafe_allow_html=True)
+    else:
+        st.markdown(f"#### 魔防克制修正: <strong><span style='font-size:25px;'> +{round(sb_zd_zjc["魔防克制修正"]*100,1)}%</span></strong>",unsafe_allow_html=True)
+
+# 分割线
+st.divider()
+
+st.write("### 士兵战场面板")
+
+sb_zdmb["生命"] = sb_bz["生命"] * (1 + sb_zd_zjc["生命"])
+sb_zdmb["攻击"] = sb_bz["攻击"] * (1 + sb_zd_zjc["攻击"])
+sb_zdmb["防御"] = sb_bz["防御"] * (1 + sb_zd_zjc["防御"])
+sb_zdmb["魔防"] = sb_bz["魔防"] * (1 + sb_zd_zjc["魔防"])
+sb_zdmb_klkz["生命"] = sb_zdmb["生命"] * (1 + sb_zd_zjc["生命克制修正"])
+sb_zdmb_klkz["物理攻击"] = sb_zdmb["攻击"] * (1 + sb_zd_zjc["攻击克制修正"])
+sb_zdmb_klkz["魔法攻击"] = sb_zdmb["攻击"] * (1 + sb_zd_zjc["智力克制修正"])
+sb_zdmb_klkz["防御攻击"] = sb_zdmb["防御"] * (1 + sb_zd_zjc["防御克制修正"])
+sb_zdmb_klkz["魔防攻击"] = sb_zdmb["魔防"] * (1 + sb_zd_zjc["魔防克制修正"])
+
+
+column1701, column1702, column1703 = st.columns([0.2,0.3,1])
+
+with column1701:
+    st.image(hero_image_url,caption=selected_hero,width=80) #设置宽度为80像素
+with column1702:
+    st.image(sb_image_url,caption=selected_sb_names,width=130) #设置宽度为130像素
+with column1703:
+    tab14, tab15 = st.tabs(["不考虑克制", "考虑克制"])
+    with tab14:
+        if sb_zd_zjc["生命"] > 0:
+            st.markdown(f"#### 生命: <strong><span style='color:green;font-size:28px;'> {round(sb_zdmb["生命"],1)}</span></strong> <strong><span style='color:green;font-size:26px;'> + {round(sb_zdmb["生命"]*yx_bx_jc["兵修生命"],1)}（{round(yx_bx_jc["兵修生命"]*100)}%）</span></strong> = <strong><span style='font-size:28px;'> {round(sb_zdmb["生命"]*(1+yx_bx_jc["兵修生命"]),1)}</span></strong>",unsafe_allow_html=True)
+        elif sb_zd_zjc["生命"] < 0:
+            st.markdown(f"#### 生命: <strong><span style='color:red;font-size:28px;'> {round(sb_zdmb["生命"],1)}</span></strong> <strong><span style='color:green;font-size:26px;'> + {round(sb_zdmb["生命"]*yx_bx_jc["兵修生命"],1)}（{round(yx_bx_jc["兵修生命"]*100)}%）</span></strong> = <strong><span style='font-size:28px;'> {round(sb_zdmb["生命"]*(1+yx_bx_jc["兵修生命"]),1)}</span></strong>",unsafe_allow_html=True)
+        else:
+            st.markdown(f"#### 生命: <strong><span style='font-size:28px;'> {round(sb_zdmb["生命"],1)}</span></strong> <strong><span style='color:green;font-size:26px;'> + {round(sb_zdmb["生命"]*yx_bx_jc["兵修生命"],1)}（{round(yx_bx_jc["兵修生命"]*100)}%）</span></strong> = <strong><span style='font-size:28px;'> {round(sb_zdmb["生命"]*(1+yx_bx_jc["兵修生命"]),1)}</span></strong>",unsafe_allow_html=True)
+        if sb_zd_zjc["攻击"] > 0:
+            st.markdown(f"#### 攻击: <strong><span style='color:green;font-size:28px;'> {round(sb_zdmb["攻击"],1)}</span></strong> <strong><span style='color:green;font-size:26px;'> + {round(sb_zdmb["攻击"]*yx_bx_jc["兵修攻击"],1)}（{round(yx_bx_jc["兵修攻击"]*100)}%）</span></strong> = <strong><span style='font-size:28px;'> {round(sb_zdmb["攻击"]*(1+yx_bx_jc["兵修攻击"]),1)}</span></strong>",unsafe_allow_html=True)
+        elif sb_zd_zjc["攻击"] < 0:
+            st.markdown(f"#### 攻击: <strong><span style='color:red;font-size:28px;'> {round(sb_zdmb["攻击"],1)}</span></strong> <strong><span style='color:green;font-size:26px;'> + {round(sb_zdmb["攻击"]*yx_bx_jc["兵修攻击"],1)}（{round(yx_bx_jc["兵修攻击"]*100)}%）</span></strong> = <strong><span style='font-size:28px;'> {round(sb_zdmb["攻击"]*(1+yx_bx_jc["兵修攻击"]),1)}</span></strong>",unsafe_allow_html=True)
+        else:
+            st.markdown(f"#### 攻击: <strong><span style='font-size:28px;'> {round(sb_zdmb["攻击"],1)}</span></strong> <strong><span style='color:green;font-size:26px;'> + {round(sb_zdmb["攻击"]*yx_bx_jc["兵修攻击"],1)}（{round(yx_bx_jc["兵修攻击"]*100)}%）</span></strong> = <strong><span style='font-size:28px;'> {round(sb_zdmb["攻击"]*(1+yx_bx_jc["兵修攻击"]),1)}</span></strong>",unsafe_allow_html=True)
+        if sb_zd_zjc["防御"] > 0:
+            st.markdown(f"#### 防御: <strong><span style='color:green;font-size:28px;'> {round(sb_zdmb["防御"],1)}</span></strong> <strong><span style='color:green;font-size:26px;'> + {round(sb_zdmb["防御"]*yx_bx_jc["兵修防御"],1)}（{round(yx_bx_jc["兵修防御"]*100)}%）</span></strong> = <strong><span style='font-size:28px;'> {round(sb_zdmb["防御"]*(1+yx_bx_jc["兵修防御"]),1)}</span></strong>",unsafe_allow_html=True)
+        elif sb_zd_zjc["防御"] < 0:
+            st.markdown(f"#### 防御: <strong><span style='color:red;font-size:28px;'> {round(sb_zdmb["防御"],1)}</span></strong> <strong><span style='color:green;font-size:26px;'> + {round(sb_zdmb["防御"]*yx_bx_jc["兵修防御"],1)}（{round(yx_bx_jc["兵修防御"]*100)}%）</span></strong> = <strong><span style='font-size:28px;'> {round(sb_zdmb["防御"]*(1+yx_bx_jc["兵修防御"]),1)}</span></strong>",unsafe_allow_html=True)
+        else:
+            st.markdown(f"#### 防御: <strong><span style='font-size:28px;'> {round(sb_zdmb["防御"],1)}</span></strong> <strong><span style='color:green;font-size:26px;'> + {round(sb_zdmb["防御"]*yx_bx_jc["兵修防御"],1)}（{round(yx_bx_jc["兵修防御"]*100)}%）</span></strong> = <strong><span style='font-size:28px;'> {round(sb_zdmb["防御"]*(1+yx_bx_jc["兵修防御"]),1)}</span></strong>",unsafe_allow_html=True)
+        if sb_zd_zjc["魔防"] > 0:
+            st.markdown(f"#### 魔防: <strong><span style='color:green;font-size:28px;'> {round(sb_zdmb["魔防"],1)}</span></strong> <strong><span style='color:green;font-size:26px;'> + {round(sb_zdmb["魔防"]*yx_bx_jc["兵修魔防"],1)}（{round(yx_bx_jc["兵修魔防"]*100)}%）</span></strong> = <strong><span style='font-size:28px;'> {round(sb_zdmb["魔防"]*(1+yx_bx_jc["兵修魔防"]),1)}</span></strong>",unsafe_allow_html=True)
+        elif sb_zd_zjc["魔防"] < 0:
+            st.markdown(f"#### 魔防: <strong><span style='color:red;font-size:28px;'> {round(sb_zdmb["魔防"],1)}</span></strong> <strong><span style='color:green;font-size:26px;'> + {round(sb_zdmb["魔防"]*yx_bx_jc["兵修魔防"],1)}（{round(yx_bx_jc["兵修魔防"]*100)}%）</span></strong> = <strong><span style='font-size:28px;'> {round(sb_zdmb["魔防"]*(1+yx_bx_jc["兵修魔防"]),1)}</span></strong>",unsafe_allow_html=True)
+        else:
+            st.markdown(f"#### 魔防: <strong><span style='font-size:28px;'> {round(sb_zdmb["魔防"],1)}</span></strong> <strong><span style='color:green;font-size:26px;'> + {round(sb_zdmb["魔防"]*yx_bx_jc["兵修魔防"],1)}（{round(yx_bx_jc["兵修魔防"]*100)}%）</span></strong> = <strong><span style='font-size:28px;'> {round(sb_zdmb["魔防"]*(1+yx_bx_jc["兵修魔防"]),1)}</span></strong>",unsafe_allow_html=True)
+    with tab15:
+        st.markdown(f"#### 生命: <strong><span style='font-size:28px;'> {round(sb_zdmb_klkz["生命"],1)}</span></strong><strong><span style='color:green;font-size:20px;'> （克制加成{round(sb_zd_zjc["生命克制修正"]*100)}%）</span></strong>",unsafe_allow_html=True)
+        st.markdown(f"#### 物理攻击: <strong><span style='font-size:28px;'> {round(sb_zdmb_klkz["物理攻击"],1)}</span></strong><strong><span style='color:green;font-size:20px;'> （克制加成{round(sb_zd_zjc["攻击克制修正"]*100)}%）</span></strong>",unsafe_allow_html=True)
+        st.markdown(f"#### 魔法攻击: <strong><span style='font-size:28px;'> {round(sb_zdmb_klkz["魔法攻击"],1)}</span></strong><strong><span style='color:green;font-size:20px;'> （克制加成{round(sb_zd_zjc["智力克制修正"]*100)}%）</span></strong>",unsafe_allow_html=True)
+        st.markdown(f"#### 防御: <strong><span style='font-size:28px;'> {round(sb_zdmb_klkz["防御"],1)}</span></strong><strong><span style='color:green;font-size:20px;'> （克制加成{round(sb_zd_zjc["防御克制修正"]*100)}%）</span></strong>",unsafe_allow_html=True)
+        st.markdown(f"#### 魔防: <strong><span style='font-size:28px;'> {round(sb_zdmb_klkz["魔防"],1)}</span></strong><strong><span style='color:green;font-size:20px;'> （克制加成{round(sb_zd_zjc["魔防克制修正"]*100)}%）</span></strong>",unsafe_allow_html=True)

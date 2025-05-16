@@ -52,6 +52,7 @@
 獠牙慑服者,骑兵,三,43,45,24,17,0.3,士兵攻击、防御提升25%。主动攻击进入战斗时士兵遭受伤害降低30%，并在战斗前恢复30%的生命。,https://patchwiki.biligame.com/images/langrisser/5/56/ia2u26338is89m989w23pmlk2dhln2l.png
 金骑士,骑兵,三,43,43,22,22,0.3,士兵生命100%时遭受所有伤害降低20%。英雄兵种为[骑兵]时，士兵攻击、防御提升30%。,https://patchwiki.biligame.com/images/langrisser/f/f1/j9pbmta1j3bql00dcm2xvzxj4uymivs.png
 独角兽,骑兵,三,43,43,22,22,0.3,普通攻击造成的「物理伤害」全部视为「魔法伤害」。部队移动方式变为「野战」，在「树林」、「山地」和「草地」战斗时攻击、魔防提升30%。,https://patchwiki.biligame.com/images/langrisser/3/3d/pevmmllevqk7fian1i5rqjgroian5gb.png
+圣殿骑士SP,骑兵,三,43,43,23,26,0.3,士兵魔防提升45%。进入战斗时攻防提升25%。和「魔物」战斗时攻防额外提升20%。,https://patchwiki.biligame.com/images/langrisser/1/1e/mvy3wqgs9kc280e4c0omj2e2tbzd1uj.png
 圣殿骑士,骑兵,三,40,40,22,26,0.3,和「魔物」战斗时攻防提升45%。魔防提升45%。,https://patchwiki.biligame.com/images/langrisser/2/2b/qpsz4plr19enlbib1j3v9tziddgte7y.png
 龙骑兵,骑兵,三,43,43,22,19,0.3,主动进入战斗时，攻击与防御提升30%。,https://patchwiki.biligame.com/images/langrisser/9/96/2y56gpcw7vv0lm5eydo2qz2r398k1u1.png
 重装骑兵,骑兵,三,40,43,22,17,0.3,攻击提升20%。,https://patchwiki.biligame.com/images/langrisser/4/4f/b3zxaozy31fyemn9gieurr2il2ipbf1.png
@@ -75,6 +76,7 @@
 皇家狮鹫,飞兵,三,40,45,20,23,0.3,士兵生命大于80%时，攻击与防御提升30%。,https://patchwiki.biligame.com/images/langrisser/0/01/1x78sm5c53zxijmy9zgv2vngi1fdibs.png
 吸血蝙蝠,飞兵,三,43,45,22,22,0.3,主动进入战斗时，战后士兵可以恢复造成伤害45%的生命。,https://patchwiki.biligame.com/images/langrisser/8/8a/qu2el5tiwiwo03qrc1pyfdipl09079r.png
 石像鬼,飞兵,三,43,45,22,22,0.3,士兵生命大于50%时攻击提升30%。士兵生命小于50%时防御提升30%。,https://patchwiki.biligame.com/images/langrisser/1/11/amlnsfztxm2qyv5ciddz9z6hzd7u3x8.png
+圣天马SP,飞兵,三,43,45,23,24,0.3,主动攻击进入战斗时，士兵攻击提升30%，遭受伤害降低50%。,https://patchwiki.biligame.com/images/langrisser/a/ad/6j2wzbir7p712zkmfzb81l2url82mzf.png
 圣天马,飞兵,三,40,43,23,23,0.3,士兵生命大于50%时，主动攻击进入战斗前，100%的概率遭受伤害降低50%。,https://patchwiki.biligame.com/images/langrisser/f/f8/3ohg2aeb100l68hj7zx47kwdnbawp8w.png
 天马,飞兵,二,31,34,18,18,0.05,被远程攻击进入战斗时，所遭受的伤害降低30%。,https://patchwiki.biligame.com/images/langrisser/f/f3/rkf335qjk7xrqzzs0afmju99p5bbwv5.png
 狮鹫骑兵,飞兵,二,31,35,16,18,0.05,生命大于80%时，所遭受的伤害降低20%。,https://patchwiki.biligame.com/images/langrisser/f/f6/t903hbrmeoop911kalfou75b6b8ybl2.png
@@ -101,6 +103,7 @@
 天空射手,弓兵,三,36,40,17,23,0.3,部队移动方式变为「飞行」。主动进入战斗时，攻击提升30%。,https://patchwiki.biligame.com/images/langrisser/7/7f/h9bjytku7e1qy3ld2ko52tely6tcawu.png
 火弩狙击手,弓兵,三,34,40,19,23,0.3,主动进入战斗时，攻击提升30%，战后额外造成对方生命上限15%的伤害。,https://patchwiki.biligame.com/images/langrisser/8/86/ed2weupfuf5l2ovvgn2161sobby6mb8.png
 矮人冒险者,弓兵,三,34,37,17,20,0.3,英雄的技能选取形式全部变为直线型。部队伤害提升15%。,https://patchwiki.biligame.com/images/langrisser/4/43/8j2r5864yxv29unu2a1n6tpz8asy9ru.png
+旋风游骑兵SP,弓兵,三,40,41,22,22,0.3,士兵生命大于50%时，攻防提升20%。被攻击进入战斗时士兵遭受伤害降低50%且部队无视进战伤害减免。,https://patchwiki.biligame.com/images/langrisser/6/6f/1xcwc9z6hkmeyaaqhp2e10ezflvp6ce.png
 旋风游骑兵,弓兵,三,40,37,22,19,0.3,生命大于50%时，被攻击时进入战斗前有100%的概率触发，遭受伤害降低50%。,https://patchwiki.biligame.com/images/langrisser/a/a4/liryuo4jgwu1unufc6irxv0mb744dqu.png
 破城巨弩,弓兵,三,34,41,19,21,0.3,部队普攻射程提升1。攻击提升20%。战斗前若没有进行过移动，攻击额外提升15%；若移动大于3格，则战斗中造成伤害降低30%。,https://patchwiki.biligame.com/images/langrisser/4/40/p5kw8d22y7kaalwap094v70cv5uib8o.png
 暗精灵射手SP,弓兵,三,35,43,20,26,0.3,进入战斗时攻击、防御提升30%，士兵生命100%时，战斗前使敌军防御降低25%，持续1回合。,https://patchwiki.biligame.com/images/langrisser/0/0c/237aqbmztuz4azy7g0j3zgag278wwte.png
